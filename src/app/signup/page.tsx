@@ -91,6 +91,7 @@ function SignupPage() {
             className="w-full"
           />
         </div>
+        
         <div className="flex items-center">
           <Checkbox
             id="acceptTerms"
@@ -103,6 +104,11 @@ function SignupPage() {
               términos y condiciones
             </a>
           </Label>
+        </div>
+        <div className="text-right">
+          <a href="/forgot-password" className="text-blue-600 hover:underline text-sm">
+            ¿Olvidaste tu contraseña?
+          </a>
         </div>
         <Button type="submit" className="w-full">
           Registrarse
