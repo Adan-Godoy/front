@@ -2,7 +2,7 @@
 "use client";
 
 import "./globals.css";
-import { Navbar } from "../components/ui/Navbar";
+import { Navbar } from "../components/Navbar";
 import type { ReactNode } from "react";
 
 interface LayoutProps {
