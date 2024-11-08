@@ -48,7 +48,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="p-4 bg-white dark:bg-gray-900 shadow-md flex justify-between items-center transition-colors duration-300">
+    (<nav className="p-4 bg-white dark:bg-gray-900 shadow-md flex justify-between items-center transition-colors duration-300">
       {/* Icono del menú hamburguesa (solo en móvil) */}
       {isMobileView && (
         <button onClick={toggleMenu} className="focus:outline-none">
@@ -59,7 +59,6 @@ export default function Navbar() {
           )}
         </button>
       )}
-
       {/* Logo y categorías (solo en pantallas grandes) */}
       <div className="flex items-center space-x-4">
         <Link href="/" className="text-xl font-bold text-gray-900 dark:text-gray-100">
@@ -100,7 +99,6 @@ export default function Navbar() {
           </div>
         )}
       </div>
-
       {/* Barra de búsqueda en pantallas grandes */}
       {!isMobileView && (
         <div className="hidden md:flex items-center space-x-2 flex-1 max-w-lg mx-4">
@@ -111,33 +109,32 @@ export default function Navbar() {
           </Button>
         </div>
       )}
-
       {/* Icono de carrito */}
       <div className="flex space-x-4 items-center">
-        <Link href="/cart">
+        <Link href="/cart" legacyBehavior>
           <ShoppingCartIcon className="w-6 h-6 text-gray-700 dark:text-gray-200" />
         </Link>
 
         {/* Mostrar botones según el estado de sesión */}
         {!isMobileView && token ? (
           <div className="flex space-x-2 items-center">
-            <Link href="/learning">
+            <Link href="/learning" legacyBehavior>
               <BookOpenIcon className="w-6 h-6 text-gray-700 dark:text-gray-200" title="Mi Aprendizaje" />
             </Link>
-            <Link href="/favorites">
+            <Link href="/favorites" legacyBehavior>
               <HeartIcon className="w-6 h-6 text-gray-700 dark:text-gray-200" title="Favoritos" />
             </Link>
-            <Link href="/profile">
+            <Link href="/profile" legacyBehavior>
               <UserCircleIcon className="w-6 h-6 text-gray-700 dark:text-gray-200" title="Perfil" />
             </Link>
           </div>
         ) : (
           !isMobileView && (
             <div className="hidden md:flex space-x-2">
-              <Link href="/login">
+              <Link href="/login" legacyBehavior>
                 <Button variant="outline" className="dark:border-gray-600 dark:text-gray-200">Iniciar Sesión</Button>
               </Link>
-              <Link href="/signup">
+              <Link href="/signup" legacyBehavior>
                 <Button className="dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700">Registrar</Button>
               </Link>
             </div>
@@ -151,7 +148,6 @@ export default function Navbar() {
           </button>
         )}
       </div>
-
       {/* Menú desplegable para móviles */}
       {isMobileView && menuOpen && (
         <div className="absolute top-16 left-0 w-full bg-white dark:bg-gray-800 shadow-md p-4 transition-colors duration-300">
@@ -170,12 +166,12 @@ export default function Navbar() {
               </>
             ) : (
               <div className="flex space-x-2">
-                <Link href="/login">
+                <Link href="/login" legacyBehavior>
                   <Button variant="outline" className="w-auto dark:border-gray-600 dark:text-gray-200">
                     Iniciar Sesión
                   </Button>
                 </Link>
-                <Link href="/signup">
+                <Link href="/signup" legacyBehavior>
                   <Button className="w-auto dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700">
                     Registrar
                   </Button>
@@ -194,7 +190,7 @@ export default function Navbar() {
           </div>
         </div>
       )}
-    </nav>
+    </nav>)
   );
 }
 

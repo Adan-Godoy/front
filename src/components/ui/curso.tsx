@@ -22,7 +22,7 @@ export default function Curso({
   description,
 }: CursoProps) {
   return (
-    <div className="bg-white shadow-md rounded-md overflow-hidden">
+    (<div className="bg-white shadow-md rounded-md overflow-hidden">
       <Image
         src={image}
         alt={title}
@@ -38,10 +38,12 @@ export default function Curso({
         </p>
         <p className="text-gray-500 mt-2">{description.slice(0, 60)}...</p>
         <p className="text-blue-600 font-semibold mt-4">${price.toFixed(2)}</p>
-        <Link href={`/courses/${id}`}>
-          <a className="text-blue-500 hover:underline mt-2 block">Ver curso</a>
+        <Link
+          href={`/courses/${id}`}
+          className="text-blue-500 hover:underline mt-2 block">
+          Ver curso
         </Link>
       </div>
-    </div>
+    </div>)
   );
 }

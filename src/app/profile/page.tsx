@@ -44,7 +44,7 @@ export default function ProfilePage() {
   if (!mounted) return null;
 
   return (
-    <div className="container mx-auto max-w-6xl p-8">
+    (<div className="container mx-auto max-w-6xl p-8">
       <h1 className="text-3xl font-bold mb-6 text-center dark:text-white">Perfil de Usuario</h1>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
@@ -57,7 +57,7 @@ export default function ProfilePage() {
             <h3 className="text-lg font-semibold mb-2 dark:text-gray-100">Información Personal</h3>
             <p className="dark:text-gray-300"><strong>Nombre:</strong> Juan Pérez</p>
             <p className="dark:text-gray-300"><strong>Email:</strong> juan.perez@example.com</p>
-            <Link href="/profile/edit">
+            <Link href="/profile/edit" legacyBehavior>
               <Button variant="outline" className="mt-4 dark:border-gray-600 dark:text-gray-300">Editar Información</Button>
             </Link>
           </div>
@@ -66,7 +66,7 @@ export default function ProfilePage() {
           <div>
             <h3 className="text-lg font-semibold mb-2 dark:text-gray-100">Historial de Compras</h3>
             <p className="text-gray-700 dark:text-gray-300">Aquí puedes ver todas las compras que has realizado.</p>
-            <Link href="/profile/orders">
+            <Link href="/profile/orders" legacyBehavior>
               <Button variant="outline" className="mt-4 dark:border-gray-600 dark:text-gray-300">Ver Historial</Button>
             </Link>
           </div>
@@ -77,7 +77,7 @@ export default function ProfilePage() {
             <p className="text-gray-700 dark:text-gray-300">
               Si tienes conocimientos que deseas compartir, únete a nuestra plataforma como instructor y enseña a otros.
             </p>
-            <Link href="/profile/become-instructor">
+            <Link href="/profile/become-instructor" legacyBehavior>
               <Button variant="outline" className="mt-4 dark:border-gray-600 dark:text-gray-300">Quiero ser Instructor</Button>
             </Link>
           </div>
@@ -115,7 +115,7 @@ export default function ProfilePage() {
           <ThemeToggle />
         </div>
       </div>
-    </div>
+    </div>)
   );
 }
 

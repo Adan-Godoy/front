@@ -62,7 +62,7 @@ function HomePage() {
   }, []);
 
   return (
-    <div className="container mx-auto p-8 dark:bg-gray-900 dark:text-gray-100">
+    (<div className="container mx-auto p-8 dark:bg-gray-900 dark:text-gray-100">
       <section className="text-center mb-12">
         <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-4">
           Bienvenido a Coderos
@@ -73,7 +73,6 @@ function HomePage() {
           desarrollo web, marketing digital, ciencia de datos, diseño gráfico y más.
         </p>
       </section>
-
       <section className="mb-12">
         <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
           Categorías Populares
@@ -81,7 +80,10 @@ function HomePage() {
         <div className="flex flex-wrap gap-4">
           {["Desarrollo Web", "Marketing Digital", "Ciencia de Datos", "Diseño Gráfico"].map(
             (category) => (
-              <Link key={category} href={`/categories/${category.toLowerCase().replace(" ", "-")}`}>
+              <Link
+                key={category}
+                href={`/categories/${category.toLowerCase().replace(" ", "-")}`}
+                legacyBehavior>
                 {/* Aquí no usamos <a> */}
                 <Button className="bg-blue-100 text-blue-800 px-4 py-2 rounded-md shadow-md hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-200 dark:hover:bg-blue-800">
                   {category}
@@ -91,7 +93,6 @@ function HomePage() {
           )}
         </div>
       </section>
-
       <section>
         <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
           Cursos Destacados
@@ -111,7 +112,7 @@ function HomePage() {
           ))}
         </div>
       </section>
-    </div>
+    </div>)
   );
 }
 
