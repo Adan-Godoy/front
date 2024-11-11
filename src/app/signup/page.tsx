@@ -6,44 +6,61 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import api from "../../lib/api//axios";
 import useAuthStore from "@/store/authStore";
 import { CheckedState } from "@radix-ui/react-checkbox";
-import axios from "axios";
+import { gql, useMutation } from '@apollo/client';
+
+const REGISTER_MUTATION = gql`
+  mutation Register($input: CreateUserInput!) {
+    register(createUserInput: $input) {
+      token
+      user {
+        id
+        username
+        email
+        role
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
 
 function SignupPage() {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(false);
   const setToken = useAuthStore((state) => state.setToken);
   const router = useRouter();
+  const [register, { loading, error }] = useMutation(REGISTER_MUTATION);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!acceptTerms) {
-      alert("Debes aceptar los términos y condiciones para registrarte.");
-      return;
-    }
-
+  
     try {
-      const response = await api.post("/register", { name, email, password });
-
-      if (response.status === 201) {
-        const token = response.data.token;
-        setToken(token); // Guarda el token en Zustand
-        alert("Registro exitoso");
-        router.push("/"); // Redirige a la página principal
+      const { data } = await register({
+        variables: {
+          input: {
+            email,
+            password,
+            username,
+            role: "STUDENT", // Asegúrate de que el rol es válido y coincide con el backend
+          },
+        },
+      });
+  
+      if (data?.register?.token) {
+        const token = data.register.token;
+        setToken(token);
+        router.push("/");
       }
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        alert("Error en el registro: " + error.response.data.message);
-      } else {
-        console.error("Error en el registro:", error);
-      }
+      console.error("Error en el registro:", error);
+      alert("Error en el registro. Inténtalo nuevamente.");
     }
   };
+  
 
   const handleCheckboxChange = (checked: CheckedState) => {
     setAcceptTerms(checked === true); // Solo acepta valores booleanos
@@ -59,12 +76,12 @@ function SignupPage() {
       <h1 className="text-3xl font-bold mb-6 text-center">Registrarse</h1>
       <form onSubmit={handleSignup} className="space-y-4">
         <div>
-          <Label htmlFor="name">Nombre</Label>
+          <Label htmlFor="username">Nombre</Label>
           <Input
-            id="name"
+            id="username" // Cambiado de "name" a "username"
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)} // Cambiado a setUsername
             required
             className="w-full"
           />
@@ -105,15 +122,12 @@ function SignupPage() {
             </a>
           </Label>
         </div>
-        <div className="text-right">
-          <a href="/forgot-password" className="text-blue-600 hover:underline text-sm">
-            ¿Olvidaste tu contraseña?
-          </a>
-        </div>
-        <Button type="submit" className="w-full">
-          Registrarse
+        <Button type="submit" className="w-full" disabled={loading}>
+          {loading ? "Registrando..." : "Registrarse"}
         </Button>
       </form>
+
+      {error && <p className="text-red-500 text-center mt-2">Error: {error.message}</p>}
 
       <div className="flex items-center my-4">
         <hr className="flex-grow border-gray-300" />

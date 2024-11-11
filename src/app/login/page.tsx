@@ -6,8 +6,23 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useAuthStore from "@/store/authStore";
-import api from "../../lib/api/axios";
-import axios from "axios";
+import { gql, useMutation } from '@apollo/client';
+
+const LOGIN_MUTATION = gql`
+  mutation Login($email: String!, $password: String!) {
+    login(loginInput: { email: $email, password: $password }) {
+      token
+      user {
+        id
+        username
+        email
+        role
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -17,6 +32,8 @@ function LoginPage() {
   const token = useAuthStore((state) => state.token); // Obtener el token actual
   const router = useRouter();
   const [mounted, setMounted] = useState(false); // Estado para verificar si el componente está montado
+
+  const [login, { loading }] = useMutation(LOGIN_MUTATION);
 
   // Solo renderizar después de que el componente esté montado en el cliente
   useEffect(() => {
@@ -55,19 +72,15 @@ function LoginPage() {
     }
 
     try {
-      const response = await api.post("/login", { email, password });
-
-      if (response.status === 200) {
-        const token = response.data.token;
-        setToken(token); // Guarda el token en Zustand y localStorage
-        router.push("/");
-      }
+      // Realizar la mutación de login con GraphQL
+      const { data } = await login({ variables: { email, password } });
+      
+      // Si la respuesta es exitosa, guardar el token y redirigir
+      const token = data.login.token;
+      setToken(token); // Guarda el token en Zustand y localStorage
+      router.push("/");
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        setError("Error de autenticación: " + error.response.data.message);
-      } else {
-        setError("Error en el inicio de sesión, por favor intente nuevamente.");
-      }
+      setError("Error en el inicio de sesión, por favor intente nuevamente.");
     }
   };
 
@@ -84,7 +97,7 @@ function LoginPage() {
       
       {error && <p className="text-red-500 dark:text-red-400 text-center mb-4">{error}</p>} {/* Mensaje de error */}
 
-      <form className="space-y-4">
+      <form className="space-y-4" onSubmit={handleLogin}>
         <div>
           <Label htmlFor="email" className="text-gray-700 dark:text-gray-300">Correo Electrónico</Label>
           <Input
@@ -114,8 +127,8 @@ function LoginPage() {
             ¿Olvidaste tu contraseña?
           </a>
         </div>
-        <Button onClick={handleLogin} className="w-full dark:bg-blue-700 dark:hover:bg-blue-800 text-white">
-          Iniciar Sesión
+        <Button type="submit" disabled={loading} className="w-full dark:bg-blue-700 dark:hover:bg-blue-800 text-white">
+          {loading ? "Cargando..." : "Iniciar Sesión"}
         </Button>
       </form>
 
