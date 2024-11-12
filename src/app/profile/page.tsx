@@ -27,9 +27,9 @@ export default function ProfilePage() {
   const { setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  // Ejecutar la consulta de perfil de usuario solo si la sesión está presente
-  const { data, loading, error } = useQuery(GET_USER_PROFILE, {
-    skip: !session?.accessToken,
+   // Ejecutar la consulta de perfil de usuario solo si la sesión está presente y es de tipo credencial
+   const { data, loading, error } = useQuery(GET_USER_PROFILE, {
+    skip: session?.user?.email?.endsWith("@gmail.com"),
   });
 
   // Redireccionar si el usuario no está autenticado
@@ -46,30 +46,36 @@ export default function ProfilePage() {
     router.push("/");
   };
 
-  if (!mounted || loading || status === "loading") return <p>Cargando...</p>;
-
-  if (error || !data) return <p>Error: No se pudo cargar el perfil del usuario.</p>;
-
-  const { username, email, role, createdAt } = data.getUserProfile;
+  
 
   return (
     <div className="container mx-auto max-w-4xl p-8">
       <h1 className="text-3xl font-bold mb-6 text-center dark:text-white">Perfil de Usuario</h1>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        
+
         {/* Columna izquierda: Información Personal */}
         <div className="bg-white dark:bg-gray-800 shadow-md rounded p-6 space-y-6">
           <h2 className="text-xl font-semibold dark:text-gray-100">Información Personal</h2>
-          <div>
+          {session?.user?.email && session.user.email.endsWith("@gmail.com") ? (
+            // Datos de usuario de Google
+            <div>
+              
+              <p className="dark:text-gray-300"><strong>Nombre:</strong> {session.user.name}</p>
+              <p className="dark:text-gray-300"><strong>Email:</strong> {session.user.email}</p>
+            </div>
+          ) : (
+            // Datos de usuario autenticado por credenciales
+            <div>
             <h3 className="text-lg font-semibold mb-2 dark:text-gray-100">Detalles del Usuario</h3>
-            <p className="dark:text-gray-300"><strong>Nombre:</strong> {username}</p>
-            <p className="dark:text-gray-300"><strong>Email:</strong> {email}</p>
-            <p className="dark:text-gray-300"><strong>Rol:</strong> {role}</p>
-            <p className="dark:text-gray-300"><strong>Creado:</strong> {new Date(createdAt).toLocaleDateString()}</p>
+            <p className="dark:text-gray-300"><strong>Nombre:</strong> {data?.getUserProfile?.username || 'N/A'}</p>
+            <p className="dark:text-gray-300"><strong>Email:</strong> {data?.getUserProfile?.email || 'N/A'}</p>
+            <p className="dark:text-gray-300"><strong>Rol:</strong> {data?.getUserProfile?.role || 'N/A'}</p>
+            <p className="dark:text-gray-300"><strong>Creado:</strong> {data?.getUserProfile?.createdAt ? new Date(data.getUserProfile.createdAt).toLocaleDateString() : 'N/A'}</p>
             <Link href="/profile/edit" legacyBehavior>
               <Button variant="outline" className="mt-4 dark:border-gray-600 dark:text-gray-300">Editar Información</Button>
             </Link>
           </div>
+          )}
 
           {/* Historial de Compras */}
           <div>
