@@ -1,14 +1,13 @@
-// components/ui/ThemeToggle.tsx
 "use client";
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
-import useAuthStore from "@/store/authStore";
+import { useSession } from "next-auth/react";
 
 export default function ThemeToggle() {
   const { theme, setTheme } = useTheme();
-  const token = useAuthStore((state) => state.token); // Obtener el token de autenticación
+  const { data: session } = useSession(); // Usa useSession para obtener el estado de autenticación
   const [mounted, setMounted] = useState(false);
 
   // Asegurarse de que el componente solo se renderice en el cliente
@@ -16,16 +15,16 @@ export default function ThemeToggle() {
     setMounted(true);
 
     // Si el usuario no está autenticado, establecer el tema en "light" una vez
-    if (!token && theme === "dark") {
+    if (!session && theme === "dark") {
       setTheme("light");
     }
-  }, [token, theme, setTheme]);
+  }, [session, theme, setTheme]);
 
   if (!mounted) return null;
 
   const toggleTheme = () => {
     // Solo permitir el cambio de tema si el usuario está autenticado
-    if (token) {
+    if (session) {
       setTheme(theme === "dark" ? "light" : "dark");
     } else {
       setTheme("light"); // Mantener el tema claro si no está autenticado

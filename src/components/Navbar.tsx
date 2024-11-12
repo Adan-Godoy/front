@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import useAuthStore from "@/store/authStore";
+import { useSession, signOut } from "next-auth/react";
 import {
   ShoppingCartIcon,
   MagnifyingGlassIcon,
@@ -15,26 +15,26 @@ import {
 } from "@heroicons/react/24/outline";
 
 export default function Navbar() {
-  const token = useAuthStore((state) => state.token); // Usar el token directamente para verificar autenticación
+  const { data: session, status } = useSession(); // Usar session para verificar autenticación
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
-  const [mounted, setMounted] = useState(false); // Estado para verificar el montaje en cliente
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true); // Asegurar que el componente esté montado en el cliente
+    setMounted(true);
 
     const handleResize = () => {
       setIsMobileView(window.innerWidth < 1024);
     };
 
-    handleResize(); // Revisión inicial
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  if (!mounted) return null; // No renderizar hasta que el componente esté montado en el cliente
+  if (!mounted) return null;
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const toggleSearch = () => setSearchOpen(!searchOpen);
@@ -48,8 +48,7 @@ export default function Navbar() {
   };
 
   return (
-    (<nav className="p-4 bg-white dark:bg-gray-900 shadow-md flex justify-between items-center transition-colors duration-300">
-      {/* Icono del menú hamburguesa (solo en móvil) */}
+    <nav className="p-4 bg-white dark:bg-gray-900 shadow-md flex justify-between items-center transition-colors duration-300">
       {isMobileView && (
         <button onClick={toggleMenu} className="focus:outline-none">
           {menuOpen ? (
@@ -59,7 +58,6 @@ export default function Navbar() {
           )}
         </button>
       )}
-      {/* Logo y categorías (solo en pantallas grandes) */}
       <div className="flex items-center space-x-4">
         <Link href="/" className="text-xl font-bold text-gray-900 dark:text-gray-100">
           Coderos
@@ -73,13 +71,8 @@ export default function Navbar() {
             <button className="text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100 focus:outline-none">
               Categorías
             </button>
-            {/* Menú desplegable de categorías */}
             {isCategoriesOpen && (
-              <div
-                className="absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-md"
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              >
+              <div className="absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-md">
                 <ul className="text-gray-700 dark:text-gray-200 py-2">
                   <li className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
                     <Link href="/categories/web-development">Desarrollo Web</Link>
@@ -99,7 +92,6 @@ export default function Navbar() {
           </div>
         )}
       </div>
-      {/* Barra de búsqueda en pantallas grandes */}
       {!isMobileView && (
         <div className="hidden md:flex items-center space-x-2 flex-1 max-w-lg mx-4">
           <Input placeholder="Buscar..." className="w-full dark:bg-gray-700 dark:text-gray-200" />
@@ -109,14 +101,13 @@ export default function Navbar() {
           </Button>
         </div>
       )}
-      {/* Icono de carrito */}
       <div className="flex space-x-4 items-center">
         <Link href="/cart" legacyBehavior>
           <ShoppingCartIcon className="w-6 h-6 text-gray-700 dark:text-gray-200" />
         </Link>
 
         {/* Mostrar botones según el estado de sesión */}
-        {!isMobileView && token ? (
+        {!isMobileView && status === "authenticated" ? (
           <div className="flex space-x-2 items-center">
             <Link href="/learning" legacyBehavior>
               <BookOpenIcon className="w-6 h-6 text-gray-700 dark:text-gray-200" title="Mi Aprendizaje" />
@@ -132,27 +123,29 @@ export default function Navbar() {
           !isMobileView && (
             <div className="hidden md:flex space-x-2">
               <Link href="/login" legacyBehavior>
-                <Button variant="outline" className="dark:border-gray-600 dark:text-gray-200">Iniciar Sesión</Button>
+                <Button variant="outline" className="dark:border-gray-600 dark:text-gray-200">
+                  Iniciar Sesión
+                </Button>
               </Link>
               <Link href="/signup" legacyBehavior>
-                <Button className="dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700">Registrar</Button>
+                <Button className="dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700">
+                  Registrar
+                </Button>
               </Link>
             </div>
           )
         )}
 
-        {/* Icono de búsqueda (solo en móvil) */}
         {isMobileView && (
           <button onClick={toggleSearch}>
             <MagnifyingGlassIcon className="w-6 h-6 text-gray-700 dark:text-gray-200" />
           </button>
         )}
       </div>
-      {/* Menú desplegable para móviles */}
       {isMobileView && menuOpen && (
         <div className="absolute top-16 left-0 w-full bg-white dark:bg-gray-800 shadow-md p-4 transition-colors duration-300">
           <div className="flex flex-col space-y-4 text-left">
-            {token ? (
+            {status === "authenticated" ? (
               <>
                 <Link href="/learning" className="text-gray-700 dark:text-gray-200">
                   Mi Aprendizaje
@@ -163,6 +156,9 @@ export default function Navbar() {
                 <Link href="/profile" className="text-gray-700 dark:text-gray-200">
                   Perfil
                 </Link>
+                <Button onClick={() => signOut()} className="text-gray-700 dark:text-gray-200">
+                  Cerrar Sesión
+                </Button>
               </>
             ) : (
               <div className="flex space-x-2">
@@ -177,6 +173,7 @@ export default function Navbar() {
                   </Button>
                 </Link>
               </div>
+              
             )}
             <Link href="/categories" className="text-gray-400 dark:text-gray-500">
               Categorías
@@ -190,7 +187,7 @@ export default function Navbar() {
           </div>
         </div>
       )}
-    </nav>)
+    </nav>
   );
 }
 

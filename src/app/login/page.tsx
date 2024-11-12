@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import useAuthStore from "@/store/authStore";
 import { gql, useMutation } from '@apollo/client';
+import { signIn, useSession } from 'next-auth/react';
 
 const LOGIN_MUTATION = gql`
   mutation Login($email: String!, $password: String!) {
@@ -27,24 +27,23 @@ const LOGIN_MUTATION = gql`
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); // Estado para manejar mensajes de error
-  const setToken = useAuthStore((state) => state.setToken);
-  const token = useAuthStore((state) => state.token); // Obtener el token actual
+  const [error, setError] = useState("");
+  const { data: session, status } = useSession(); // Utilizar session de next-auth
   const router = useRouter();
-  const [mounted, setMounted] = useState(false); // Estado para verificar si el componente está montado
+  const [mounted, setMounted] = useState(false);
 
   const [login, { loading }] = useMutation(LOGIN_MUTATION);
 
-  // Solo renderizar después de que el componente esté montado en el cliente
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  // Redirigir si el usuario ya está autenticado
   useEffect(() => {
-    if (token) {
+    if (status === "authenticated") {
       router.push("/");
     }
-  }, [token, router]);
+  }, [status, router]);
 
   const validateEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -53,7 +52,7 @@ function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-
+  
     if (!validateEmail(email)) {
       setError("Por favor, ingrese un correo electrónico válido.");
       return;
@@ -62,40 +61,32 @@ function LoginPage() {
       setError("La contraseña debe tener al menos 6 caracteres.");
       return;
     }
-
-    if (email === "admin@coderos.com" && password === "admin123") {
-      const token = "admin-token";
-      setToken(token); // Guarda el token en Zustand y localStorage
-      alert("Inicio de sesión exitoso como administrador");
-      router.push("/");
-      return;
-    }
-
+  
     try {
-      // Realizar la mutación de login con GraphQL
-      const { data } = await login({ variables: { email, password } });
-      
-      // Si la respuesta es exitosa, guardar el token y redirigir
-      const token = data.login.token;
-      setToken(token); // Guarda el token en Zustand y localStorage
-      router.push("/");
+      const result = await signIn("credentials", {
+        email,           // Agrega aquí el email
+        password,        // Agrega aquí el password
+        redirect: false, // Evita la redirección automática para manejar errores
+      });
+  
+      if (result?.error) {
+        setError("Error en el inicio de sesión, por favor intente nuevamente.");
+      } else {
+        router.push("/");
+      }
     } catch (error) {
+      console.error("Error en el inicio de sesión:", error);
       setError("Error en el inicio de sesión, por favor intente nuevamente.");
     }
   };
 
-  const handleGoogleLogin = () => {
-    alert("Iniciar sesión con Google - funcionalidad pendiente de implementar.");
-  };
-
-  // Solo renderiza el componente si `mounted` es true
   if (!mounted) return null;
 
   return (
     <div className="container mx-auto max-w-md p-8 bg-white dark:bg-gray-900 dark:text-gray-200 shadow-md rounded-md">
       <h1 className="text-3xl font-bold mb-6 text-center text-gray-900 dark:text-gray-100">Iniciar Sesión</h1>
       
-      {error && <p className="text-red-500 dark:text-red-400 text-center mb-4">{error}</p>} {/* Mensaje de error */}
+      {error && <p className="text-red-500 dark:text-red-400 text-center mb-4">{error}</p>}
 
       <form className="space-y-4" onSubmit={handleLogin}>
         <div>
@@ -139,7 +130,7 @@ function LoginPage() {
       </div>
 
       <Button
-        onClick={handleGoogleLogin}
+        onClick={() => signIn("google", { callbackUrl: "/" })}
         className="w-full bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white"
       >
         Iniciar sesión con Google

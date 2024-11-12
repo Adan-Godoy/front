@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import "./globals.css";
 import { ApolloProvider } from "@apollo/client";
 import { ThemeProvider } from "next-themes";
+import { SessionProvider } from "next-auth/react";
 import client from "../lib/api/apolloClient";
 import { Navbar } from "../components/Navbar";
 import { useState, useEffect } from "react";
@@ -24,14 +25,16 @@ export default function RootLayout({ children }: LayoutProps) {
     <html lang="es">
       <body>
         <ApolloProvider client={client}>
-          {mounted ? (
-            <ThemeProvider attribute="class">
-              <Navbar />
+          <SessionProvider >
+            {mounted ? (
+              <ThemeProvider attribute="class">
+                <Navbar />
+                <main>{children}</main>
+              </ThemeProvider>
+            ) : (
               <main>{children}</main>
-            </ThemeProvider>
-          ) : (
-            <main>{children}</main>
-          )}
+            )}
+          </SessionProvider>
         </ApolloProvider>
       </body>
     </html>

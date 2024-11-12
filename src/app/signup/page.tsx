@@ -6,9 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import useAuthStore from "@/store/authStore";
 import { CheckedState } from "@radix-ui/react-checkbox";
 import { gql, useMutation } from '@apollo/client';
+import { signIn } from 'next-auth/react';
 
 const REGISTER_MUTATION = gql`
   mutation Register($input: CreateUserInput!) {
@@ -31,13 +31,12 @@ function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(false);
-  const setToken = useAuthStore((state) => state.setToken);
   const router = useRouter();
   const [register, { loading, error }] = useMutation(REGISTER_MUTATION);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     try {
       const { data } = await register({
         variables: {
@@ -45,14 +44,18 @@ function SignupPage() {
             email,
             password,
             username,
-            role: "STUDENT", // Asegúrate de que el rol es válido y coincide con el backend
+            role: "STUDENT",
           },
         },
       });
-  
+
       if (data?.register?.token) {
-        const token = data.register.token;
-        setToken(token);
+        // Autenticación automática usando `signIn` con el token después de registrar al usuario
+        await signIn("credentials", {
+          token: data.register.token,
+          callbackUrl: "/",
+          redirect: false,
+        });
         router.push("/");
       }
     } catch (error) {
@@ -60,15 +63,13 @@ function SignupPage() {
       alert("Error en el registro. Inténtalo nuevamente.");
     }
   };
-  
 
   const handleCheckboxChange = (checked: CheckedState) => {
     setAcceptTerms(checked === true); // Solo acepta valores booleanos
   };
 
   const handleGoogleSignup = () => {
-    // Implementa la autenticación con Google aquí
-    alert("Registrarse con Google - funcionalidad pendiente de implementar.");
+    signIn("google", { callbackUrl: "/" });
   };
 
   return (
@@ -78,10 +79,10 @@ function SignupPage() {
         <div>
           <Label htmlFor="username">Nombre</Label>
           <Input
-            id="username" // Cambiado de "name" a "username"
+            id="username"
             type="text"
             value={username}
-            onChange={(e) => setUsername(e.target.value)} // Cambiado a setUsername
+            onChange={(e) => setUsername(e.target.value)}
             required
             className="w-full"
           />
@@ -130,9 +131,9 @@ function SignupPage() {
       {error && <p className="text-red-500 text-center mt-2">Error: {error.message}</p>}
 
       <div className="flex items-center my-4">
-        <hr className="flex-grow border-gray-300" />
-        <span className="px-2 text-gray-500">o</span>
-        <hr className="flex-grow border-gray-300" />
+        <hr className="flex-grow border-gray-300 dark:border-gray-700" />
+        <span className="px-2 text-gray-500 dark:text-gray-400">o</span>
+        <hr className="flex-grow border-gray-300 dark:border-gray-700" />
       </div>
 
       <Button
