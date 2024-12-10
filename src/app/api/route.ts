@@ -23,6 +23,14 @@ interface ErrorResponse {
   message: string;
 }
 
+interface ChatbotResponse {
+  statusCode: number;
+  message: string;
+  data: {
+    response: string;
+  };
+}
+
 // Función para iniciar sesión
 export const login = async (email: string, password: string): Promise<{ success: boolean; accessToken?: string; refreshToken?: string; error?: string }> => {
   try {
@@ -58,6 +66,24 @@ export const register = async (email: string, password: string): Promise<{ succe
     const axiosError = error as AxiosError<ErrorResponse>;
     console.error('Error al registrar usuario:', axiosError.response?.data?.message || axiosError.message);
     return { success: false, error: axiosError.response?.data?.message || axiosError.message };
+  }
+};
+
+// Función para enviar mensaje al chatbot
+export const sendChatMessage = async (prompt: string): Promise<ChatbotResponse> => {
+  try {
+    const response = await api.post<ChatbotResponse>('/chatbot/message', { prompt });
+    return response.data;
+  } catch (error: unknown) {
+    const axiosError = error as AxiosError<ErrorResponse>;
+    console.error('Error en el chatbot:', axiosError.response?.data?.message || axiosError.message);
+    return {
+      statusCode: 500,
+      message: 'Error interno del servidor',
+      data: {
+        response: 'Lo siento, ha ocurrido un error al procesar tu mensaje. Por favor, intenta de nuevo más tarde.'
+      }
+    };
   }
 };
 
