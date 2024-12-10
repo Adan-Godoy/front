@@ -33,7 +33,7 @@ export default function OrderHistoryPage() {
       }
 
       try {
-        const response = await axios.get(`/payment/transactions/${userId}`);
+        const response = await axios.get(`/payment/transaction/${userId}`);
         setTransactions(response.data);
 
         const courseIds = response.data.flatMap((transaction: Transaction) => transaction.items);

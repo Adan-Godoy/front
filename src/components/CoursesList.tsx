@@ -36,7 +36,7 @@ const CoursesList = () => {
 
   useEffect(() => {
     // Verifica si existe un token en localStorage
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("accessToken");
     setIsLoggedIn(!!token); // Cambia el estado según la existencia del token
   }, []);
 

@@ -148,18 +148,7 @@ export default function ProfilePage() {
             </div>
           )}
 
-          {/* Historial de Compras */}
-          <div>
-            <h3 className="text-lg font-semibold mb-2 dark:text-gray-100">Historial de Compras</h3>
-            <p className="text-gray-700 dark:text-gray-300">
-              Aquí puedes ver todas las compras que has realizado.
-            </p>
-            <Link href="/profile/orders" legacyBehavior>
-              <Button variant="outline" className="mt-4 dark:border-gray-600 dark:text-gray-300">
-                Ver Historial
-              </Button>
-            </Link>
-          </div>
+          
 
           {/* Cerrar Sesión */}
           <div>
@@ -175,18 +164,20 @@ export default function ProfilePage() {
         <div className="bg-white dark:bg-gray-800 shadow-md rounded p-6 flex flex-col items-center space-y-6">
           <h2 className="text-xl font-semibold dark:text-gray-100">Opciones de Tema</h2>
           <ThemeToggle />
-          <div className="text-center">
-            <h3 className="text-lg font-semibold mb-2 dark:text-gray-100">¿Quieres ser Instructor?</h3>
+
+          {/* Historial de Compras */}
+          <div>
+            <h3 className="text-lg font-semibold mb-2 dark:text-gray-100">Historial de Compras</h3>
             <p className="text-gray-700 dark:text-gray-300">
-              Si tienes conocimientos que deseas compartir, únete a nuestra plataforma como instructor y enseña a
-              otros.
+              Aquí puedes ver todas las compras que has realizado.
             </p>
-            <Link href="/profile/become-instructor" legacyBehavior>
+            <Link href="/profile/orders" legacyBehavior>
               <Button variant="outline" className="mt-4 dark:border-gray-600 dark:text-gray-300">
-                Quiero ser Instructor
+                Ver Historial
               </Button>
             </Link>
           </div>
+          
         </div>
       </div>
     </div>

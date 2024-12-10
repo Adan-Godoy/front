@@ -21,25 +21,7 @@ function HomePage() {
           desarrollo web, marketing digital, ciencia de datos, diseño gráfico y más.
         </p>
       </section>
-      <section className="mb-12">
-        <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
-          Categorías Populares
-        </h2>
-        <div className="flex flex-wrap gap-4">
-          {["Desarrollo Web", "Marketing Digital", "Ciencia de Datos", "Diseño Gráfico"].map(
-            (category) => (
-              <Link
-                key={category}
-                href={`/categories/${category.toLowerCase().replace(" ", "-")}`}
-                legacyBehavior>
-                <Button className="bg-blue-100 text-blue-800 px-4 py-2 rounded-md shadow-md hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-200 dark:hover:bg-blue-800">
-                  {category}
-                </Button>
-              </Link>
-            )
-          )}
-        </div>
-      </section>
+      
       <section>
         <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
           Cursos Destacados

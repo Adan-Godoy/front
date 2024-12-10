@@ -43,17 +43,19 @@ function LoginPage() {
     try {
       const result = await login(email, password);
       
-      if (result.success) {
-        
-        //window.location.reload();
-
+      if (result.success ) {
+        // Redireccionar al inicio después del login exitoso
         window.location.href = "/";
-
       } else {
-        setError(result.error || "Error al iniciar sesión.");
+        setError("Contraseña y/o correo electrónico incorrecto.");
       }
-    } catch (error) {
-      setError("Hubo un error al iniciar sesión. Intenta nuevamente.");
+    } catch (error: any) {
+      // Capturar el error y manejarlo de forma amigable
+      if (error.response && error.response.status === 401) {
+        setError("Contraseña y/o correo electrónico incorrecto.");
+      } else {
+        setError("Hubo un error al iniciar sesión. Intenta nuevamente.");
+      }
     } finally {
       setLoading(false);
     }
