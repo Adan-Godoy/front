@@ -1,0 +1,2367 @@
+ESTRUCTURA DEL PROYECTO REACT
+
+Directorio raíz: C:\Users\fabi_\Desktop\front
+
+
+==================================================
+Archivo: .eslintrc.json
+==================================================
+
+{
+  "extends": ["next/core-web-vitals", "next/typescript"],
+
+  "rules": {
+    "@typescript-eslint/no-empty-interface": "off"
+  }
+}
+
+
+
+
+==================================================
+Archivo: README.md
+==================================================
+
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+## Getting Started
+
+First, run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+
+
+==================================================
+Archivo: components.json
+==================================================
+
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york",
+  "rsc": true,
+  "tsx": true,
+  "tailwind": {
+    "config": "tailwind.config.ts",
+    "css": "src/app/globals.css",
+    "baseColor": "slate",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks"
+  }
+}
+
+
+
+==================================================
+Archivo: heroicons.d.ts
+==================================================
+
+declare module '@heroicons/react/outline' {
+    import { ComponentType, SVGProps } from "react";
+    const content: { [key: string]: ComponentType<SVGProps<SVGSVGElement>> };
+    export = content;
+  }
+  
+
+
+
+==================================================
+Archivo: next-env.d.ts
+==================================================
+
+/// <reference types="next" />
+/// <reference types="next/image-types/global" />
+
+// NOTE: This file should not be edited
+// see https://nextjs.org/docs/app/building-your-application/configuring/typescript for more information.
+
+
+
+
+==================================================
+Archivo: package.json
+==================================================
+
+{
+  "name": "front",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 5000",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.11.9",
+    "@heroicons/react": "^2.1.5",
+    "@radix-ui/react-checkbox": "^1.1.2",
+    "@radix-ui/react-icons": "^1.3.0",
+    "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-slot": "^1.1.0",
+    "@types/next": "^8.0.7",
+    "axios": "^1.7.9",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "graphql": "^16.9.0",
+    "lucide-react": "^0.453.0",
+    "next": "^14.2.15",
+    "next-auth": "^4.24.10",
+    "next-themes": "^0.4.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwind-merge": "^2.5.4",
+    "tailwindcss-animate": "^1.0.7",
+    "zustand": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.15",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}
+
+
+
+
+==================================================
+Archivo: tailwind.config.ts
+==================================================
+
+import type { Config } from "tailwindcss";
+
+const config: Config = {
+    darkMode: ["class"],
+    content: [
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  theme: {
+  	extend: {
+  		colors: {
+  			background: 'hsl(var(--background))',
+  			foreground: 'hsl(var(--foreground))',
+  			card: {
+  				DEFAULT: 'hsl(var(--card))',
+  				foreground: 'hsl(var(--card-foreground))'
+  			},
+  			popover: {
+  				DEFAULT: 'hsl(var(--popover))',
+  				foreground: 'hsl(var(--popover-foreground))'
+  			},
+  			primary: {
+  				DEFAULT: 'hsl(var(--primary))',
+  				foreground: 'hsl(var(--primary-foreground))'
+  			},
+  			secondary: {
+  				DEFAULT: 'hsl(var(--secondary))',
+  				foreground: 'hsl(var(--secondary-foreground))'
+  			},
+  			muted: {
+  				DEFAULT: 'hsl(var(--muted))',
+  				foreground: 'hsl(var(--muted-foreground))'
+  			},
+  			accent: {
+  				DEFAULT: 'hsl(var(--accent))',
+  				foreground: 'hsl(var(--accent-foreground))'
+  			},
+  			destructive: {
+  				DEFAULT: 'hsl(var(--destructive))',
+  				foreground: 'hsl(var(--destructive-foreground))'
+  			},
+  			border: 'hsl(var(--border))',
+  			input: 'hsl(var(--input))',
+  			ring: 'hsl(var(--ring))',
+  			chart: {
+  				'1': 'hsl(var(--chart-1))',
+  				'2': 'hsl(var(--chart-2))',
+  				'3': 'hsl(var(--chart-3))',
+  				'4': 'hsl(var(--chart-4))',
+  				'5': 'hsl(var(--chart-5))'
+  			}
+  		},
+  		borderRadius: {
+  			lg: 'var(--radius)',
+  			md: 'calc(var(--radius) - 2px)',
+  			sm: 'calc(var(--radius) - 4px)'
+  		}
+  	}
+  },
+  plugins: [require("tailwindcss-animate")],
+};
+export default config;
+
+
+
+
+==================================================
+Archivo: tsconfig.json
+==================================================
+
+{
+  "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/api/auth/[...nextauth].js", "src/app/api/auth/[...nextauth].js"],
+  "exclude": ["node_modules"]
+}
+
+
+
+
+Directorio: .idea/
+
+
+Directorio: .idea\inspectionProfiles/
+
+
+Directorio: src/
+
+
+Directorio: src\app/
+
+
+==================================================
+Archivo: src\app\globals.css
+==================================================
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+  :root {
+    --background-color: #ffffff;
+    --text-color: #000000;
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem
+    
+  }
+  .dark {
+    --background-color: #1a202c; /* Color de fondo oscuro */
+    --text-color: #ffffff; /* Color de texto claro */
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%
+  }
+}
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}
+
+
+
+
+
+==================================================
+Archivo: src\app\layout.tsx
+==================================================
+
+// app/layout.tsx
+"use client";
+
+import type { ReactNode } from "react";
+import "./globals.css";
+import { ApolloProvider } from "@apollo/client";
+import { ThemeProvider } from "next-themes";
+import { SessionProvider } from "next-auth/react";
+import { Navbar } from "../components/Navbar";
+import { useState, useEffect } from "react";
+import { CartProvider } from "@/context/CartContext";
+
+interface LayoutProps {
+  children: ReactNode;
+}
+
+export default function RootLayout({ children }: LayoutProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  return (
+    <html lang="es">
+      <body>
+        <CartProvider>
+          <SessionProvider >
+            {mounted ? (
+              <ThemeProvider attribute="class">
+                <Navbar />
+                <main>{children}</main>
+              </ThemeProvider>
+            ) : (
+              <main>{children}</main>
+            )}
+          </SessionProvider>
+        </CartProvider>
+      </body>
+    </html>
+  );
+}
+
+
+
+
+==================================================
+Archivo: src\app\page.tsx
+==================================================
+
+"use client";
+
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import CoursesList from '../components/CoursesList';
+
+
+
+function HomePage() {
+
+  return (
+    <div className="container mx-auto p-8 dark:bg-gray-900 dark:text-gray-100">
+      <section className="text-center mb-12">
+        <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-4">
+          Bienvenido a Coderos
+        </h1>
+        <p className="text-lg text-gray-600 dark:text-gray-300">
+          Descubre una amplia gama de cursos impartidos por instructores expertos.
+          Aprende nuevas habilidades y mejora tu carrera con nuestras categorías de
+          desarrollo web, marketing digital, ciencia de datos, diseño gráfico y más.
+        </p>
+      </section>
+      <section className="mb-12">
+        <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
+          Categorías Populares
+        </h2>
+        <div className="flex flex-wrap gap-4">
+          {["Desarrollo Web", "Marketing Digital", "Ciencia de Datos", "Diseño Gráfico"].map(
+            (category) => (
+              <Link
+                key={category}
+                href={`/categories/${category.toLowerCase().replace(" ", "-")}`}
+                legacyBehavior>
+                <Button className="bg-blue-100 text-blue-800 px-4 py-2 rounded-md shadow-md hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-200 dark:hover:bg-blue-800">
+                  {category}
+                </Button>
+              </Link>
+            )
+          )}
+        </div>
+      </section>
+      <section>
+        <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
+          Cursos Destacados
+        </h2>
+        <CoursesList />  
+      </section>
+    </div>
+  );
+}
+
+export default HomePage;
+
+
+
+Directorio: src\app\api/
+
+
+==================================================
+Archivo: src\app\api\route.ts
+==================================================
+
+import axios, { AxiosError } from 'axios';
+
+// Configuración base de Axios
+const api = axios.create({
+  baseURL: 'http://localhost:3000/api/v2',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Interfaces para los datos
+interface LoginResponse {
+  accessToken: string;
+  refreshToken: string;
+}
+
+interface RegisterResponse {
+  accessToken: string;
+  refreshToken: string;
+}
+
+interface ErrorResponse {
+  message: string;
+}
+
+// Función para iniciar sesión
+export const login = async (email: string, password: string): Promise<{ success: boolean; accessToken?: string; refreshToken?: string; error?: string }> => {
+  try {
+    const response = await api.post<LoginResponse>('/auth/login', { email, password });
+
+    // Guardar tokens en localStorage
+    const { accessToken, refreshToken } = response.data;
+    console.log("Response data:", response.data);
+
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+
+    return { success: true, accessToken, refreshToken };
+  } catch (error: unknown) {
+    const axiosError = error as AxiosError<ErrorResponse>;
+    console.error('Error al iniciar sesión:', axiosError.response?.data?.message || axiosError.message);
+    return { success: false, error: axiosError.response?.data?.message || axiosError.message };
+  }
+};
+
+// Función para registrar un usuario
+export const register = async (email: string, password: string): Promise<{ success: boolean; accessToken?: string; refreshToken?: string; error?: string }> => {
+  try {
+    const response = await api.post<RegisterResponse>('/auth/register', { email, password });
+
+    // Guardar tokens en localStorage
+    const { accessToken, refreshToken } = response.data;
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+
+    return { success: true, accessToken, refreshToken };
+  } catch (error: unknown) {
+    const axiosError = error as AxiosError<ErrorResponse>;
+    console.error('Error al registrar usuario:', axiosError.response?.data?.message || axiosError.message);
+    return { success: false, error: axiosError.response?.data?.message || axiosError.message };
+  }
+};
+
+// Función para obtener los tokens del localStorage
+export const getTokens = (): { accessToken: string | null; refreshToken: string | null } => {
+  return {
+    accessToken: localStorage.getItem('accessToken'),
+    refreshToken: localStorage.getItem('refreshToken'),
+  };
+};
+
+// Función para eliminar los tokens del localStorage
+export const clearTokens = (): void => {
+  localStorage.removeItem('accessToken');
+  localStorage.removeItem('refreshToken');
+};
+
+export default api;
+
+
+
+Directorio: src\app\api\auth/
+
+
+Directorio: src\app\api\auth\[...nextauth]/
+
+
+==================================================
+Archivo: src\app\api\auth\[...nextauth]\route.js
+==================================================
+
+import NextAuth from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { gql, ApolloClient, InMemoryCache } from '@apollo/client';
+
+// Configuración de Apollo Client para GraphQL
+const client = new ApolloClient({
+  uri: process.env.GRAPHQL_API_URL,
+  cache: new InMemoryCache(),
+});
+
+// Consulta para verificar si el usuario ya existe en la base de datos
+const CHECK_USER = gql`
+  query CheckUser($email: String!) {
+    checkUser(email: $email) {
+      id
+      email
+      username
+      role
+    }
+  }
+`;
+
+// Mutación para crear un usuario en la base de datos si no existe
+const CREATE_USER = gql`
+  mutation CreateGoogleUser($email: String!, $username: String!, $role: UserRole!) {
+    createGoogleUser(createGoogleUserInput: { email: $email, username: $username, role: $role }) {
+      id
+      email
+      username
+      role
+    }
+  }
+`;
+
+// Mutación para iniciar sesión con credenciales
+const LOGIN_MUTATION = gql`
+  mutation Login($email: String!, $password: String!) {
+    login(loginInput: {
+      email: $email
+      password: $password
+    }) {
+      token
+      user {
+        id
+        username
+        email
+        role
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+
+export const authOptions = {
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+    CredentialsProvider({
+      name: 'Credentials',
+      credentials: {
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
+      },
+      authorize: async (credentials) => {
+        try {
+          const { data } = await client.mutate({
+            mutation: LOGIN_MUTATION,
+            variables: {
+              email: credentials.email,
+              password: credentials.password,
+            },
+          });
+
+          if (data.login) {
+            return {
+              id: data.login.user.id,
+              name: data.login.user.username,
+              email: data.login.user.email,
+              role: data.login.user.role,
+              accessToken: data.login.token,
+            };
+          }
+
+          return null;
+        } catch (error) {
+          console.error('Error en el inicio de sesión:', error);
+          return null;
+        }
+      },
+    }),
+  ],
+  secret: process.env.NEXTAUTH_SECRET,
+  callbacks: {
+    async signIn({ user, account, profile }) {
+      if (account.provider === 'google') {
+        try {
+          const { data } = await client.query({
+            query: CHECK_USER,
+            variables: { email: profile.email },
+          });
+
+          if (!data.checkUser) {
+            // Crear un nuevo usuario si no existe en la base de datos
+            const createdUser = await client.mutate({
+              mutation: CREATE_USER,
+              variables: {
+                email: profile.email,
+                username: profile.name,
+                role: 'STUDENT',
+              },
+            });
+            user.id = createdUser.data.createGoogleUser.id;
+          } else {
+            // Si el usuario ya existe, usa su ID
+            user.id = data.checkUser.id;
+          }
+
+          user.accessToken = account.access_token; // Guarda el accessToken de Google en el objeto user
+          return true;
+        } catch (error) {
+          console.error('Error en el proceso de inicio de sesión con Google:', error);
+          return false;
+        }
+      }
+      return true;
+    },
+    async jwt({ token, user, account }) {
+      // Almacenar el accessToken de Google o del inicio de sesión normal
+      if (account && account.provider === 'google' && account.access_token) {
+        token.accessToken = account.access_token;
+      } else if (user) {
+        token.id = user.id;
+        token.accessToken = user.accessToken || null;
+      }
+      console.log("JWT Token:", token); // Debug
+      return token;
+    },
+    async session({ session, token }) {
+      session.userId = token.id;
+      session.accessToken = token.accessToken;
+      console.log("Session:", session); // Debug
+      return session;
+    },
+  },
+  pages: {
+    signIn: '/login',
+    error: '/auth/error',
+  },
+};
+
+// Exporta handlers específicos para GET y POST en lugar de `export default`
+export const GET = NextAuth(authOptions);
+export const POST = NextAuth(authOptions);
+
+
+
+
+Directorio: src\app\cart/
+
+
+==================================================
+Archivo: src\app\cart\page.tsx
+==================================================
+
+"use client";
+import { Button } from "@/components/ui/button";
+import { useCart } from "@/context/CartContext";
+
+const CartPage = () => {
+  const { cartItems, removeFromCart, clearCart } = useCart();
+
+  const totalCLP = cartItems.reduce((acc, item) => acc + item.price , 0);
+
+  return (
+    <div className="container mx-auto p-8 dark:bg-gray-900 dark:text-gray-100">
+      <h1 className="text-3xl font-bold mb-6 text-center">Carrito de Compras</h1>
+      {cartItems.length > 0 ? (
+        <div className="space-y-6">
+          {cartItems.map((item) => (
+            <div key={item.id} className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 shadow-md rounded-md">
+              <div className="flex items-center space-x-4">
+                <img src={item.imageUrl} alt={item.courseName} className="w-16 h-16 rounded-md object-cover" />
+                <div>
+                  <h2 className="text-lg font-semibold">{item.courseName}</h2>
+                  <p>Precio: {new Intl.NumberFormat("es-CL", { style: "currency", currency: "CLP" }).format(item.price)}</p>
+                  <p>Cantidad: {1}</p>
+                </div>
+              </div>
+              <Button onClick={() => removeFromCart(item.id)} className="bg-red-500 text-white">
+                Eliminar
+              </Button>
+            </div>
+          ))}
+          <div className="text-right p-4 bg-white dark:bg-gray-800 shadow-md rounded-md">
+            <h2 className="text-xl font-semibold">Total: {new Intl.NumberFormat("es-CL", { style: "currency", currency: "CLP" }).format(totalCLP)}</h2>
+            <Button onClick={clearCart} className="mt-4 bg-blue-600 text-white">
+              Limpiar Carrito
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <p className="text-center">Tu carrito está vacío.</p>
+      )}
+    </div>
+  );
+};
+
+export default CartPage;
+
+
+
+
+Directorio: src\app\chat/
+
+
+==================================================
+Archivo: src\app\chat\page.tsx
+==================================================
+
+"use client";
+
+import ChatWindow from "@/components/ChatWindow";
+
+export default function ChatPage() {
+    return (
+        <div className="container mx-auto p-8 min-h-screen">
+            <h1 className="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-gray-100">
+                Asistente Virtual
+            </h1>
+            <ChatWindow />
+        </div>
+    );
+}
+
+
+
+Directorio: src\app\confirmT/
+
+
+==================================================
+Archivo: src\app\confirmT\page.tsx
+==================================================
+
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+
+interface PaymentDetails {
+  success: boolean;
+  details?: any;
+  error?: string;
+}
+
+const ConfirmPage = () => {
+  const [paymentDetails, setPaymentDetails] = useState<PaymentDetails | null>(null);
+ 
+
+  return (
+    <div className="container mx-auto p-8 dark:bg-gray-900 dark:text-gray-100">
+      <h1 className="text-3xl font-bold text-center mb-6 dark:text-white">
+        Confirmación de Pago
+      </h1>
+
+      {paymentDetails ? (
+        paymentDetails.success ? (
+          <div>
+            <h2 className="text-2xl font-semibold dark:text-white">
+              Pago Confirmado Exitosamente
+            </h2>
+            <div className="mt-4">
+              <h3 className="text-lg">Detalles de la Venta:</h3>
+              <p><strong>Orden de Compra:</strong> {paymentDetails.details.buyOrder}</p>
+              <p><strong>Fecha de Transacción:</strong> {paymentDetails.details.transactionDate}</p>
+              <p><strong>Estado de la Transacción:</strong> {paymentDetails.details.status}</p>
+              <p><strong>Valor Total:</strong> ${paymentDetails.details.amount}</p>
+            </div>
+          </div>
+        ) : (
+          <div>
+            <h2 className="text-2xl font-semibold text-red-600 dark:text-red-500">
+              Error al Confirmar el Pago
+            </h2>
+            <p className="mt-4">{paymentDetails.error}</p>
+          </div>
+        )
+      ) : (
+        <p>Cargando detalles del pago...</p>
+      )}
+    </div>
+  );
+};
+
+export default ConfirmPage;
+
+
+
+
+Directorio: src\app\favorites/
+
+
+==================================================
+Archivo: src\app\favorites\page.tsx
+==================================================
+
+"use client";
+
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+
+type FavoriteItem = {
+  id: string;
+  name: string;
+  image: string;
+  instructor: string;
+};
+
+function FavoritesPage() {
+  const [favorites, setFavorites] = useState<FavoriteItem[]>([
+    {
+      id: "1",
+      name: "Curso de Desarrollo Web",
+      image: "/images/web-development.jpg",
+      instructor: "Juan Pérez",
+    },
+    {
+      id: "2",
+      name: "Curso de Ciencia de Datos",
+      image: "/images/data-science.jpg",
+      instructor: "Ana Gómez",
+    },
+  ]);
+
+  const handleRemoveFavorite = (id: string) => {
+    setFavorites(favorites.filter((item) => item.id !== id));
+  };
+
+  return (
+    <div className="container mx-auto p-8 dark:bg-gray-900 dark:text-gray-100">
+      <h1 className="text-3xl font-bold mb-6 text-center dark:text-white">Mis Favoritos</h1>
+
+      {favorites.length > 0 ? (
+        <div className="space-y-6">
+          {favorites.map((item) => (
+            <div
+              key={item.id}
+              className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 shadow-md rounded-md"
+            >
+              <div className="flex items-center space-x-4">
+                <img src={item.image} alt={item.name} className="w-16 h-16 rounded-md object-cover" />
+                <div>
+                  <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">{item.name}</h2>
+                  <p className="text-gray-600 dark:text-gray-300">Instructor: {item.instructor}</p>
+                </div>
+              </div>
+              <Button
+                onClick={() => handleRemoveFavorite(item.id)}
+                className="bg-red-500 text-white dark:bg-red-600"
+              >
+                Eliminar
+              </Button>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-center text-gray-600 dark:text-gray-300">No tienes cursos favoritos.</p>
+      )}
+    </div>
+  );
+}
+
+export default FavoritesPage;
+
+
+
+
+Directorio: src\app\fonts/
+
+
+Directorio: src\app\learning/
+
+
+==================================================
+Archivo: src\app\learning\page.tsx
+==================================================
+
+"use client";
+
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+
+type LearningItem = {
+  id: string;
+  name: string;
+  image: string;
+  instructor: string;
+  progress: number;
+};
+
+function MyLearningPage() {
+  const [learningItems, setLearningItems] = useState<LearningItem[]>([
+    {
+      id: "1",
+      name: "Curso de Desarrollo Web",
+      image: "/images/web-development.jpg",
+      instructor: "Juan Pérez",
+      progress: 50,
+    },
+    {
+      id: "2",
+      name: "Curso de Ciencia de Datos",
+      image: "/images/data-science.jpg",
+      instructor: "Ana Gómez",
+      progress: 75,
+    },
+  ]);
+
+  return (
+    <div className="container mx-auto p-8 dark:bg-gray-900 dark:text-gray-100">
+      <h1 className="text-3xl font-bold mb-6 text-center dark:text-white">Mi Aprendizaje</h1>
+
+      {learningItems.length > 0 ? (
+        <div className="space-y-6">
+          {learningItems.map((item) => (
+            <div
+              key={item.id}
+              className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 shadow-md rounded-md"
+            >
+              <div className="flex items-center space-x-4">
+                <img src={item.image} alt={item.name} className="w-16 h-16 rounded-md object-cover" />
+                <div>
+                  <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">{item.name}</h2>
+                  <p className="text-gray-600 dark:text-gray-300">Instructor: {item.instructor}</p>
+                  <p className="text-gray-600 dark:text-gray-300">Progreso: {item.progress}%</p>
+                </div>
+              </div>
+              <Button className="bg-blue-600 text-white dark:bg-blue-700 dark:hover:bg-blue-800">
+                Continuar
+              </Button>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-center text-gray-600 dark:text-gray-300">No estás inscrito en ningún curso.</p>
+      )}
+    </div>
+  );
+}
+
+export default MyLearningPage;
+
+
+
+
+Directorio: src\app\login/
+
+
+==================================================
+Archivo: src\app\login\page.tsx
+==================================================
+
+"use client";
+
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { login } from "../api/route"; // Importa la lógica de login
+
+function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const validateEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    if (!validateEmail(email)) {
+      setError("Por favor, ingrese un correo electrónico válido.");
+      setLoading(false);
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("La contraseña debe tener al menos 6 caracteres.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const result = await login(email, password);
+      if (result.success) {
+        router.push("/"); // Redirige a la página principal
+      } else {
+        setError(result.error || "Error al iniciar sesión.");
+      }
+    } catch (error) {
+      setError("Hubo un error al iniciar sesión. Intenta nuevamente.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (!mounted) return null;
+
+  return (
+    <div className="container mx-auto max-w-md p-8 bg-white dark:bg-gray-900 dark:text-gray-200 shadow-md rounded-md">
+      <h1 className="text-3xl font-bold mb-6 text-center text-gray-900 dark:text-gray-100">Iniciar Sesión</h1>
+
+      {error && <p className="text-red-500 dark:text-red-400 text-center mb-4">{error}</p>}
+
+      <form className="space-y-4" onSubmit={handleLogin}>
+        <div>
+          <Label htmlFor="email" className="text-gray-700 dark:text-gray-300">Correo Electrónico</Label>
+          <Input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="w-full dark:bg-gray-800 dark:text-gray-200 dark:placeholder-gray-500"
+            placeholder="ejemplo@correo.com"
+          />
+        </div>
+        <div>
+          <Label htmlFor="password" className="text-gray-700 dark:text-gray-300">Contraseña</Label>
+          <Input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="w-full dark:bg-gray-800 dark:text-gray-200 dark:placeholder-gray-500"
+            placeholder="********"
+          />
+        </div>
+        <Button type="submit" disabled={loading} className="w-full dark:bg-blue-700 dark:hover:bg-blue-800 text-white">
+          {loading ? "Cargando..." : "Iniciar Sesión"}
+        </Button>
+      </form>
+
+      <p className="text-center mt-4 text-sm text-gray-700 dark:text-gray-300">
+        ¿No tienes cuenta?{" "}
+        <a href="/signup" className="text-blue-600 hover:underline dark:text-blue-400">
+          Regístrate aquí
+        </a>
+      </p>
+    </div>
+  );
+}
+
+export default LoginPage;
+
+
+
+
+Directorio: src\app\profile/
+
+
+==================================================
+Archivo: src\app\profile\page.tsx
+==================================================
+
+"use client";
+
+import { useSession, signOut } from 'next-auth/react';
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import ThemeToggle from "@/components/ui/ThemeToggle";
+import { useTheme } from "next-themes";
+import { gql, useQuery } from '@apollo/client';
+
+const GET_USER_PROFILE = gql`
+  query GetUserProfile {
+    getUserProfile {
+      id
+      username
+      email
+      role
+      createdAt
+    }
+  }
+`;
+
+export default function ProfilePage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const { setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+   // Ejecutar la consulta de perfil de usuario solo si la sesión está presente y es de tipo credencial
+   const { data, loading, error } = useQuery(GET_USER_PROFILE, {
+    skip: session?.user?.email?.endsWith("@gmail.com"),
+  });
+
+  // Redireccionar si el usuario no está autenticado
+  useEffect(() => {
+    setMounted(true);
+    if (status === "unauthenticated" && mounted) {
+      router.push("/login");
+    }
+  }, [status, mounted, router]);
+
+  const handleLogout = () => {
+    signOut();
+    setTheme("light"); // Cambia el tema a claro al cerrar sesión
+    router.push("/");
+  };
+
+  
+
+  return (
+    <div className="container mx-auto max-w-4xl p-8">
+      <h1 className="text-3xl font-bold mb-6 text-center dark:text-white">Perfil de Usuario</h1>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+        {/* Columna izquierda: Información Personal */}
+        <div className="bg-white dark:bg-gray-800 shadow-md rounded p-6 space-y-6">
+          <h2 className="text-xl font-semibold dark:text-gray-100">Información Personal</h2>
+          {session?.user?.email && session.user.email.endsWith("@gmail.com") ? (
+            // Datos de usuario de Google
+            <div>
+              
+              <p className="dark:text-gray-300"><strong>Nombre:</strong> {session.user.name}</p>
+              <p className="dark:text-gray-300"><strong>Email:</strong> {session.user.email}</p>
+            </div>
+          ) : (
+            // Datos de usuario autenticado por credenciales
+            <div>
+            <h3 className="text-lg font-semibold mb-2 dark:text-gray-100">Detalles del Usuario</h3>
+            <p className="dark:text-gray-300"><strong>Nombre:</strong> {data?.getUserProfile?.username || 'N/A'}</p>
+            <p className="dark:text-gray-300"><strong>Email:</strong> {data?.getUserProfile?.email || 'N/A'}</p>
+            <p className="dark:text-gray-300"><strong>Rol:</strong> {data?.getUserProfile?.role || 'N/A'}</p>
+            <p className="dark:text-gray-300"><strong>Creado:</strong> {data?.getUserProfile?.createdAt ? new Date(data.getUserProfile.createdAt).toLocaleDateString() : 'N/A'}</p>
+            <Link href="/profile/edit" legacyBehavior>
+              <Button variant="outline" className="mt-4 dark:border-gray-600 dark:text-gray-300">Editar Información</Button>
+            </Link>
+          </div>
+          )}
+
+          {/* Historial de Compras */}
+          <div>
+            <h3 className="text-lg font-semibold mb-2 dark:text-gray-100">Historial de Compras</h3>
+            <p className="text-gray-700 dark:text-gray-300">Aquí puedes ver todas las compras que has realizado.</p>
+            <Link href="/profile/orders" legacyBehavior>
+              <Button variant="outline" className="mt-4 dark:border-gray-600 dark:text-gray-300">Ver Historial</Button>
+            </Link>
+          </div>
+
+          {/* Cerrar Sesión */}
+          <div>
+            <h3 className="text-lg font-semibold mb-2 dark:text-gray-100">Cerrar Sesión</h3>
+            <p className="text-gray-700 dark:text-gray-300">¿Deseas cerrar tu sesión?</p>
+            <Button onClick={handleLogout} className="mt-4 bg-red-500 text-white dark:bg-red-600">
+              Cerrar Sesión
+            </Button>
+          </div>
+        </div>
+
+        {/* Columna derecha: Opciones adicionales */}
+        <div className="bg-white dark:bg-gray-800 shadow-md rounded p-6 flex flex-col items-center space-y-6">
+          <h2 className="text-xl font-semibold dark:text-gray-100">Opciones de Tema</h2>
+          <ThemeToggle />
+          <div className="text-center">
+            <h3 className="text-lg font-semibold mb-2 dark:text-gray-100">¿Quieres ser Instructor?</h3>
+            <p className="text-gray-700 dark:text-gray-300">
+              Si tienes conocimientos que deseas compartir, únete a nuestra plataforma como instructor y enseña a otros.
+            </p>
+            <Link href="/profile/become-instructor" legacyBehavior>
+              <Button variant="outline" className="mt-4 dark:border-gray-600 dark:text-gray-300">Quiero ser Instructor</Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+
+Directorio: src\app\signup/
+
+
+==================================================
+Archivo: src\app\signup\page.tsx
+==================================================
+
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { register } from "../api/route"; // Importa la lógica de registro
+
+function SignupPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    if (!acceptTerms) {
+      setError("Debes aceptar los términos y condiciones para registrarte.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const result = await register(email, password);
+      if (result.success) {
+        router.push("/"); // Redirige al inicio tras el registro exitoso
+      } else {
+        setError(result.error || "Error al registrarse.");
+      }
+    } catch (error) {
+      setError("Hubo un error al registrarse. Intenta nuevamente.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="container mx-auto max-w-md p-8">
+      <h1 className="text-3xl font-bold mb-6 text-center">Registrarse</h1>
+      {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+      <form onSubmit={handleSignup} className="space-y-4">
+        <div>
+          <Label htmlFor="email">Correo Electrónico</Label>
+          <Input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="w-full"
+          />
+        </div>
+        <div>
+          <Label htmlFor="password">Contraseña</Label>
+          <Input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="w-full"
+          />
+        </div>
+        <div className="flex items-center">
+          <input
+            id="acceptTerms"
+            type="checkbox"
+            checked={acceptTerms}
+            onChange={(e) => setAcceptTerms(e.target.checked)}
+            className="mr-2"
+          />
+          <Label htmlFor="acceptTerms">
+            Acepto los{" "}
+            <a href="/terms" className="text-blue-600 hover:underline">
+              términos y condiciones
+            </a>
+          </Label>
+        </div>
+        <Button type="submit" disabled={loading} className="w-full">
+          {loading ? "Cargando..." : "Registrarse"}
+        </Button>
+      </form>
+
+      <p className="text-center mt-4 text-sm">
+        ¿Ya tienes cuenta?{" "}
+        <a href="/login" className="text-blue-600 hover:underline">
+          Inicia sesión aquí
+        </a>
+      </p>
+    </div>
+  );
+}
+
+export default SignupPage;
+
+
+
+
+Directorio: src\components/
+
+
+==================================================
+Archivo: src\components\ChatWindow.tsx
+==================================================
+
+import React, { useState, useRef, useEffect } from 'react';
+import { Send } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+
+interface Message {
+    role: 'user' | 'assistant';
+    content: string;
+}
+
+interface ChatResponse {
+    statusCode: number;
+    message: string;
+    data: {
+        response: string;
+    };
+}
+
+const ChatWindow = () => {
+    const [messages, setMessages] = useState<Message[]>([
+        {
+            role: 'assistant',
+            content: '¡Hola! Soy Nina, tu asistente virtual. ¿En qué puedo ayudarte hoy?'
+        }
+    ]);
+    const [input, setInput] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+    const scrollToBottom = () => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
+
+    const sendMessage = async (prompt: string): Promise<ChatResponse> => {
+        try {
+            const response = await fetch('/api/v2/chatbot/message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ prompt }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('Error sending message:', error);
+            throw error;
+        }
+    };
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (!input.trim()) return;
+
+        const userMessage = input.trim();
+        setInput('');
+        setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
+        setIsLoading(true);
+
+        try {
+            const response = await sendMessage(userMessage);
+
+            if (response.data && response.data.response) {
+                setMessages(prev => [...prev, {
+                    role: 'assistant',
+                    content: response.data.response
+                }]);
+            } else {
+                throw new Error('Invalid response format');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            setMessages(prev => [...prev, {
+                role: 'assistant',
+                content: 'Lo siento, ha ocurrido un error. Por favor, intenta de nuevo más tarde.'
+            }]);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            const form = e.currentTarget.form;
+            if (form) form.requestSubmit();
+        }
+    };
+
+    return (
+        <div className="flex flex-col h-[600px] max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+            {/* Header */}
+            <div className="p-4 border-b dark:border-gray-700">
+                <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
+                    Chat con Nina
+                </h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                    Asistente virtual powered by Hugging Face
+                </p>
+            </div>
+
+            {/* Messages Container */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                {messages.map((message, index) => (
+                    <div
+                        key={index}
+                        className={`flex ${
+                            message.role === 'user' ? 'justify-end' : 'justify-start'
+                        }`}
+                    >
+                        <div
+                            className={`max-w-[80%] rounded-lg p-3 ${
+                                message.role === 'user'
+                                    ? 'bg-blue-600 text-white'
+                                    : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100'
+                            }`}
+                        >
+                            {message.content}
+                        </div>
+                    </div>
+                ))}
+                {isLoading && (
+                    <div className="flex justify-start">
+                        <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-3 max-w-[80%]">
+                            <div className="flex space-x-2">
+                                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
+                                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce delay-100"></div>
+                                <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce delay-200"></div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+                <div ref={messagesEndRef} />
+            </div>
+
+            {/* Input Form */}
+            <form onSubmit={handleSubmit} className="p-4 border-t dark:border-gray-700">
+                <div className="flex space-x-2">
+                    <Input
+                        value={input}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                        placeholder="Escribe tu mensaje..."
+                        className="flex-1"
+                        disabled={isLoading}
+                    />
+                    <Button
+                        type="submit"
+                        disabled={isLoading || !input.trim()}
+                        className="bg-blue-600 hover:bg-blue-700"
+                    >
+                        <Send className="h-5 w-5" />
+                    </Button>
+                </div>
+            </form>
+        </div>
+    );
+};
+
+export default ChatWindow;
+
+
+
+==================================================
+Archivo: src\components\CoursesList.tsx
+==================================================
+
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { useCart } from "@/context/CartContext";
+import api from "../app/api/route";
+
+interface Course {
+  id: string;
+  _id?: string; 
+  courseName: string;
+  teacherId: string;
+  description: string;
+  price: number;
+  category: string;
+  imageUrl: string;
+}
+
+const formatPrice = (price: number): string => {
+  return new Intl.NumberFormat("es-CL", {
+    style: "currency",
+    currency: "CLP",
+  }).format(price);
+};
+
+const CoursesList = () => {
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { cartItems, addToCart } = useCart();
+
+  const [toast, setToast] = useState<{ show: boolean; courseName: string }>({
+    show: false,
+    courseName: "",
+  });
+
+  useEffect(() => {
+    const fetchRandomCourses = async () => {
+      try {
+        const response = await api.get<Course[]>("/courses");
+        const allCourses = response.data.map((course) => ({
+          ...course,
+          id: course._id ? course._id.toString() : "", // Asegúrate de que `id` sea siempre un string
+        }));
+    
+        const selectedCourses =
+          allCourses.length <= 6
+            ? allCourses
+            : allCourses.sort(() => 0.5 - Math.random()).slice(0, 6);
+    
+        setCourses(selectedCourses);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+        setLoading(false);
+      }
+    };
+    
+  
+    fetchRandomCourses();
+  }, []);
+  
+  
+
+  const handleAddToCart = (course: Course) => {
+    addToCart(course);
+    setToast({ show: true, courseName: course.courseName });
+
+    setTimeout(() => {
+      setToast({ show: false, courseName: "" });
+    }, 3000);
+  };
+
+
+  if (loading) return <p className="text-center">Cargando cursos...</p>;
+  if (!loading && courses.length === 0) return <p className="text-center">No hay cursos disponibles en este momento.</p>;
+
+  return (
+    <>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {courses.map((course) => {
+          const isInCart = cartItems.some((item) => item.id === course.id);
+
+          return (
+            <div key={course.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 flex flex-col items-center">
+              <img
+                src={course.imageUrl || "https://via.placeholder.com/150"}
+                alt={course.courseName}
+                className="w-full h-40 object-cover rounded-md mb-4"
+              />
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">{course.courseName}</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm text-center mb-4">{course.description}</p>
+              <p className="text-gray-800 dark:text-gray-200 font-bold mb-4">{formatPrice(course.price)}</p>
+              <Button
+                onClick={() => !isInCart && handleAddToCart(course)}
+                className={`px-4 py-2 rounded-md ${
+                  isInCart
+                    ? "bg-gray-500 text-white cursor-not-allowed"
+                    : "bg-blue-800 text-white hover:bg-blue-900"
+                }`}
+                disabled={isInCart}
+              >
+                {isInCart ? "Ya añadido" : "Agregar al Carrito"}
+              </Button>
+            </div>
+          );
+        })}
+      </div>
+
+      {toast.show && (
+        <div className="fixed bottom-4 right-4 bg-gray-800 text-white p-4 rounded-md shadow-lg flex items-center space-x-4">
+          <p>{`¡${toast.courseName} se ha agregado al carrito!`}</p>
+          <Button
+            className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+            onClick={() => (window.location.href = "/cart")}
+          >
+            Ir a la Cesta
+          </Button>
+        </div>
+      )}
+    </>
+  );
+};
+
+export default CoursesList;
+
+
+
+
+==================================================
+Archivo: src\components\Navbar.tsx
+==================================================
+
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
+import {
+  ShoppingCartIcon,
+  MagnifyingGlassIcon,
+  Bars3Icon,
+  XMarkIcon,
+  HeartIcon,
+  UserCircleIcon,
+  BookOpenIcon,
+  ChatBubbleLeftIcon,
+} from "@heroicons/react/24/outline";
+
+export default function Navbar() {
+  const { data: session, status } = useSession();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [isMobileView, setIsMobileView] = useState(false);
+  const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+
+    const handleResize = () => {
+      setIsMobileView(window.innerWidth < 1024);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  if (!mounted) return null;
+
+  const toggleMenu = () => setMenuOpen(!menuOpen);
+  const toggleSearch = () => setSearchOpen(!searchOpen);
+
+  const handleMouseEnter = () => {
+    setIsCategoriesOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsCategoriesOpen(false);
+  };
+
+  return (
+      <nav className="p-4 bg-white dark:bg-gray-900 shadow-md flex justify-between items-center transition-colors duration-300">
+        {isMobileView && (
+            <button onClick={toggleMenu} className="focus:outline-none">
+              {menuOpen ? (
+                  <XMarkIcon className="w-6 h-6 text-gray-700 dark:text-gray-200" />
+              ) : (
+                  <Bars3Icon className="w-6 h-6 text-gray-700 dark:text-gray-200" />
+              )}
+            </button>
+        )}
+        <div className="flex items-center space-x-4">
+          <Link href="/" className="text-xl font-bold text-gray-900 dark:text-gray-100">
+            Coderos
+          </Link>
+          {!isMobileView && (
+              <div
+                  className="relative group"
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+              >
+                <button className="text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100 focus:outline-none">
+                  Categorías
+                </button>
+                {isCategoriesOpen && (
+                    <div className="absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-md">
+                      <ul className="text-gray-700 dark:text-gray-200 py-2">
+                        <li className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
+                          <Link href="/categories/web-development">Desarrollo Web</Link>
+                        </li>
+                        <li className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
+                          <Link href="/categories/digital-marketing">Marketing Digital</Link>
+                        </li>
+                        <li className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
+                          <Link href="/categories/data-science">Data Science</Link>
+                        </li>
+                        <li className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
+                          <Link href="/categories/graphic-design">Diseño Gráfico</Link>
+                        </li>
+                      </ul>
+                    </div>
+                )}
+              </div>
+          )}
+        </div>
+        {!isMobileView && (
+            <div className="hidden md:flex items-center space-x-2 flex-1 max-w-lg mx-4">
+              <Input placeholder="Buscar..." className="w-full dark:bg-gray-700 dark:text-gray-200" />
+              <Button className="dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700">
+                <MagnifyingGlassIcon className="w-5 h-5 mr-2" />
+                Buscar
+              </Button>
+            </div>
+        )}
+        <div className="flex space-x-4 items-center">
+          <Link href="/cart">
+            <ShoppingCartIcon className="w-6 h-6 text-gray-700 dark:text-gray-200" />
+          </Link>
+
+          {/* Botón de chat siempre visible */}
+          <Link href="/chat">
+            <ChatBubbleLeftIcon className="w-6 h-6 text-gray-700 dark:text-gray-200" title="Chat con Nina" />
+          </Link>
+
+          {!isMobileView && status === "authenticated" ? (
+              <div className="flex space-x-2 items-center">
+                <Link href="/learning">
+                  <BookOpenIcon className="w-6 h-6 text-gray-700 dark:text-gray-200" title="Mi Aprendizaje" />
+                </Link>
+                <Link href="/favorites">
+                  <HeartIcon className="w-6 h-6 text-gray-700 dark:text-gray-200" title="Favoritos" />
+                </Link>
+                <Link href="/profile">
+                  <UserCircleIcon className="w-6 h-6 text-gray-700 dark:text-gray-200" title="Perfil" />
+                </Link>
+              </div>
+          ) : (
+              !isMobileView && (
+                  <div className="hidden md:flex space-x-2">
+                    <Link href="/login" legacyBehavior>
+                      <Button variant="outline" className="dark:border-gray-600 dark:text-gray-200">
+                        Iniciar Sesión
+                      </Button>
+                    </Link>
+                    <Link href="/signup" legacyBehavior>
+                      <Button className="dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700">
+                        Registrar
+                      </Button>
+                    </Link>
+                  </div>
+              )
+          )}
+
+          {isMobileView && (
+              <button onClick={toggleSearch}>
+                <MagnifyingGlassIcon className="w-6 h-6 text-gray-700 dark:text-gray-200" />
+              </button>
+          )}
+        </div>
+
+        {isMobileView && menuOpen && (
+            <div className="absolute top-16 left-0 w-full bg-white dark:bg-gray-800 shadow-md p-4 transition-colors duration-300">
+              <div className="flex flex-col space-y-4 text-left">
+                {status === "authenticated" ? (
+                    <>
+                      <Link href="/learning" className="text-gray-700 dark:text-gray-200">
+                        Mi Aprendizaje
+                      </Link>
+                      <Link href="/favorites" className="text-gray-700 dark:text-gray-200">
+                        Favoritos
+                      </Link>
+                      <Link href="/profile" className="text-gray-700 dark:text-gray-200">
+                        Perfil
+                      </Link>
+                      <Link href="/chat" className="text-gray-700 dark:text-gray-200">
+                        Chat con Nina
+                      </Link>
+                      <Button onClick={() => signOut()} className="text-gray-700 dark:text-gray-200">
+                        Cerrar Sesión
+                      </Button>
+                    </>
+                ) : (
+                    <>
+                      <div className="flex space-x-2">
+                        <Link href="/login" legacyBehavior>
+                          <Button variant="outline" className="w-auto dark:border-gray-600 dark:text-gray-200">
+                            Iniciar Sesión
+                          </Button>
+                        </Link>
+                        <Link href="/signup" legacyBehavior>
+                          <Button className="w-auto dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700">
+                            Registrar
+                          </Button>
+                        </Link>
+                      </div>
+                      <Link href="/chat" className="text-gray-700 dark:text-gray-200">
+                        Chat con Nina
+                      </Link>
+                    </>
+                )}
+                <Link href="/categories" className="text-gray-400 dark:text-gray-500">
+                  Categorías
+                </Link>
+                <ul className="text-gray-500 dark:text-gray-400 space-y-2 pl-4">
+                  <li>Desarrollo Web</li>
+                  <li>Marketing Digital</li>
+                  <li>Data Science</li>
+                  <li>Diseño Gráfico</li>
+                </ul>
+              </div>
+            </div>
+        )}
+      </nav>
+  );
+}
+
+export { Navbar };
+
+
+
+==================================================
+Archivo: src\components\paymentButton.tsx
+==================================================
+
+"use client";
+import React, { useRef } from "react";
+
+interface PaymentButtonProps {
+  token: string;
+  url: string;
+}
+function PaymentButton({ token, url }: PaymentButtonProps) {
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const handlePayment = () => {
+    if (formRef.current) {
+      formRef.current.submit();
+    }
+  };
+
+  return (
+    <>
+      <form
+        ref={formRef}
+        method="POST"
+        action={url}
+        style={{ display: "none" }}
+      >
+        <input type="hidden" name="token_ws" value={token} />
+      </form>
+      <button onClick={handlePayment}>Pagar con Webpay</button>
+    </>
+  );
+}
+
+export default PaymentButton;
+
+
+
+Directorio: src\components\ui/
+
+
+==================================================
+Archivo: src\components\ui\ThemeToggle.tsx
+==================================================
+
+"use client";
+
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
+import { useSession } from "next-auth/react";
+
+export default function ThemeToggle() {
+  const { theme, setTheme } = useTheme();
+  const { data: session } = useSession(); // Usa useSession para obtener el estado de autenticación
+  const [mounted, setMounted] = useState(false);
+
+  // Asegurarse de que el componente solo se renderice en el cliente
+  useEffect(() => {
+    setMounted(true);
+
+    // Si el usuario no está autenticado, establecer el tema en "light" una vez
+    if (!session && theme === "dark") {
+      setTheme("light");
+    }
+  }, [session, theme, setTheme]);
+
+  if (!mounted) return null;
+
+  const toggleTheme = () => {
+    // Solo permitir el cambio de tema si el usuario está autenticado
+    if (session) {
+      setTheme(theme === "dark" ? "light" : "dark");
+    } else {
+      setTheme("light"); // Mantener el tema claro si no está autenticado
+    }
+  };
+
+  return (
+    <button
+      onClick={toggleTheme}
+      className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-200"
+      aria-label="Toggle theme"
+    >
+      {theme === "dark" ? (
+        <SunIcon className="w-6 h-6" />
+      ) : (
+        <MoonIcon className="w-6 h-6" />
+      )}
+    </button>
+  );
+}
+
+
+
+
+==================================================
+Archivo: src\components\ui\button.tsx
+==================================================
+
+import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
+import { cva, type VariantProps } from "class-variance-authority"
+
+import { cn } from "@/lib/utils"
+
+const buttonVariants = cva(
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  {
+    variants: {
+      variant: {
+        default:
+          "bg-primary text-primary-foreground shadow hover:bg-primary/90",
+        destructive:
+          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+        outline:
+          "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
+        secondary:
+          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-9 px-4 py-2",
+        sm: "h-8 rounded-md px-3 text-xs",
+        lg: "h-10 rounded-md px-8",
+        icon: "h-9 w-9",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+)
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean
+}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button"
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Button.displayName = "Button"
+
+export { Button, buttonVariants }
+
+
+
+
+==================================================
+Archivo: src\components\ui\checkbox.tsx
+==================================================
+
+"use client"
+
+import * as React from "react"
+import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
+import { CheckIcon } from "@radix-ui/react-icons"
+
+import { cn } from "@/lib/utils"
+
+const Checkbox = React.forwardRef<
+  React.ElementRef<typeof CheckboxPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>
+>(({ className, ...props }, ref) => (
+  <CheckboxPrimitive.Root
+    ref={ref}
+    className={cn(
+      "peer h-4 w-4 shrink-0 rounded-sm border border-primary shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground",
+      className
+    )}
+    {...props}
+  >
+    <CheckboxPrimitive.Indicator
+      className={cn("flex items-center justify-center text-current")}
+    >
+      <CheckIcon className="h-4 w-4" />
+    </CheckboxPrimitive.Indicator>
+  </CheckboxPrimitive.Root>
+))
+Checkbox.displayName = CheckboxPrimitive.Root.displayName
+
+export { Checkbox }
+
+
+
+
+==================================================
+Archivo: src\components\ui\curso.tsx
+==================================================
+
+// components/Curso.tsx
+import Link from "next/link";
+import Image from "next/image";
+
+type CursoProps = {
+  id: string;
+  title: string;
+  instructor: string;
+  image: string;
+  price: number;
+  rating: number;
+  description: string;
+};
+
+export default function Curso({
+  id,
+  title,
+  instructor,
+  image,
+  price,
+  rating,
+  description,
+}: CursoProps) {
+  return (
+    (<div className="bg-white shadow-md rounded-md overflow-hidden">
+      <Image
+        src={image}
+        alt={title}
+        width={500}
+        height={300}
+        className="w-full h-48 object-cover"
+      />
+      <div className="p-4">
+        <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
+        <p className="text-gray-600">Instructor: {instructor}</p>
+        <p className="text-yellow-500">
+          {Array.from({ length: Math.round(rating) }, () => "⭐").join(" ")}
+        </p>
+        <p className="text-gray-500 mt-2">{description.slice(0, 60)}...</p>
+        <p className="text-blue-600 font-semibold mt-4">${price.toFixed(2)}</p>
+        <Link
+          href={`/courses/${id}`}
+          className="text-blue-500 hover:underline mt-2 block">
+          Ver curso
+        </Link>
+      </div>
+    </div>)
+  );
+}
+
+
+
+
+==================================================
+Archivo: src\components\ui\input.tsx
+==================================================
+
+import * as React from "react"
+
+import { cn } from "@/lib/utils"
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
+
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ className, type, ...props }, ref) => {
+    return (
+      <input
+        type={type}
+        className={cn(
+          "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+          className
+        )}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Input.displayName = "Input"
+
+export { Input }
+
+
+
+
+==================================================
+Archivo: src\components\ui\label.tsx
+==================================================
+
+"use client"
+
+import * as React from "react"
+import * as LabelPrimitive from "@radix-ui/react-label"
+import { cva, type VariantProps } from "class-variance-authority"
+
+import { cn } from "@/lib/utils"
+
+const labelVariants = cva(
+  "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+)
+
+const Label = React.forwardRef<
+  React.ElementRef<typeof LabelPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> &
+    VariantProps<typeof labelVariants>
+>(({ className, ...props }, ref) => (
+  <LabelPrimitive.Root
+    ref={ref}
+    className={cn(labelVariants(), className)}
+    {...props}
+  />
+))
+Label.displayName = LabelPrimitive.Root.displayName
+
+export { Label }
+
+
+
+
+Directorio: src\context/
+
+
+==================================================
+Archivo: src\context\CartContext.tsx
+==================================================
+
+import React, { createContext, useContext, useEffect, useState } from "react";
+
+interface CartItem {
+  id: string;
+  courseName: string;
+  imageUrl: string;
+  price: number;
+}
+
+interface CartContextProps {
+  cartItems: CartItem[];
+  addToCart: (item: CartItem) => void;
+  removeFromCart: (id: string) => void;
+  clearCart: () => void;
+}
+
+const CartContext = createContext<CartContextProps | undefined>(undefined);
+
+export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+    try {
+      const storedCart = localStorage.getItem("cart");
+      return storedCart ? JSON.parse(storedCart) : [];
+    } catch (error) {
+      console.error("Error al cargar el carrito desde localStorage:", error);
+      return [];
+    }
+  });
+
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("cart", JSON.stringify(cartItems));
+    } catch (error) {
+      console.error("Error al guardar el carrito en localStorage:", error);
+    }
+  }, [cartItems]);
+
+  const addToCart = (item: CartItem) => {
+    setCartItems((prevCart) => {
+      if (!prevCart.find((cartItem) => cartItem.id === item.id)) {
+        return [...prevCart, item];
+      }
+      return prevCart;
+    });
+  };
+
+  const removeFromCart = (id: string) => {
+    setCartItems((prevCart) => prevCart.filter((item) => item.id !== id));
+  };
+
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
+  return (
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, clearCart }}>
+      {children}
+    </CartContext.Provider>
+  );
+};
+
+export const useCart = () => {
+  const context = useContext(CartContext);
+  if (!context) {
+    throw new Error("useCart debe ser usado dentro de un CartProvider");
+  }
+  return context;
+};
+
+
+
+
+Directorio: src\lib/
+
+
+==================================================
+Archivo: src\lib\utils.ts
+==================================================
+
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+
+
+
+
+Directorio: src\types/
+
+
+==================================================
+Archivo: src\types\courses.ts
+==================================================
+
+// src/types.ts
+export interface Course {
+    id: string;
+    title: string;
+    description: string;
+    price: number;
+    instructorId: string;
+    tags: string[];
+    createdAt: string;
+  }
+  
+
+
+
+==================================================
+Archivo: src\types\next-auth.d.ts
+==================================================
+
+// next-auth.d.ts
+import NextAuth from 'next-auth';
+
+declare module 'next-auth' {
+  interface Session {
+    accessToken?: string;
+    token?: string; // Agrega la propiedad token
+  }
+}
+
