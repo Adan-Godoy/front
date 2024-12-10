@@ -5,88 +5,46 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { CheckedState } from "@radix-ui/react-checkbox";
-import { gql, useMutation } from '@apollo/client';
-import { signIn } from 'next-auth/react';
-
-const REGISTER_MUTATION = gql`
-  mutation Register($input: CreateUserInput!) {
-    register(createUserInput: $input) {
-      token
-      user {
-        id
-        username
-        email
-        role
-        createdAt
-        updatedAt
-      }
-    }
-  }
-`;
+import { register } from "../api/route"; // Importa la lógica de registro
 
 function SignupPage() {
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const [register, { loading, error }] = useMutation(REGISTER_MUTATION);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    if (!acceptTerms) {
+      setError("Debes aceptar los términos y condiciones para registrarte.");
+      setLoading(false);
+      return;
+    }
 
     try {
-      const { data } = await register({
-        variables: {
-          input: {
-            email,
-            password,
-            username,
-            role: "STUDENT",
-          },
-        },
-      });
-
-      if (data?.register?.token) {
-        // Autenticación automática usando `signIn` con el token después de registrar al usuario
-        await signIn("credentials", {
-          token: data.register.token,
-          callbackUrl: "/",
-          redirect: false,
-        });
-        router.push("/");
+      const result = await register(email, password);
+      if (result.success) {
+        router.push("/"); // Redirige al inicio tras el registro exitoso
+      } else {
+        setError(result.error || "Error al registrarse.");
       }
     } catch (error) {
-      console.error("Error en el registro:", error);
-      alert("Error en el registro. Inténtalo nuevamente.");
+      setError("Hubo un error al registrarse. Intenta nuevamente.");
+    } finally {
+      setLoading(false);
     }
-  };
-
-  const handleCheckboxChange = (checked: CheckedState) => {
-    setAcceptTerms(checked === true); // Solo acepta valores booleanos
-  };
-
-  const handleGoogleSignup = () => {
-    signIn("google", { callbackUrl: "/" });
   };
 
   return (
     <div className="container mx-auto max-w-md p-8">
       <h1 className="text-3xl font-bold mb-6 text-center">Registrarse</h1>
+      {error && <p className="text-red-500 text-center mb-4">{error}</p>}
       <form onSubmit={handleSignup} className="space-y-4">
-        <div>
-          <Label htmlFor="username">Nombre</Label>
-          <Input
-            id="username"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            className="w-full"
-          />
-        </div>
         <div>
           <Label htmlFor="email">Correo Electrónico</Label>
           <Input
@@ -109,39 +67,25 @@ function SignupPage() {
             className="w-full"
           />
         </div>
-        
         <div className="flex items-center">
-          <Checkbox
+          <input
             id="acceptTerms"
+            type="checkbox"
             checked={acceptTerms}
-            onCheckedChange={handleCheckboxChange}
+            onChange={(e) => setAcceptTerms(e.target.checked)}
+            className="mr-2"
           />
-          <Label htmlFor="acceptTerms" className="ml-2">
+          <Label htmlFor="acceptTerms">
             Acepto los{" "}
             <a href="/terms" className="text-blue-600 hover:underline">
               términos y condiciones
             </a>
           </Label>
         </div>
-        <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? "Registrando..." : "Registrarse"}
+        <Button type="submit" disabled={loading} className="w-full">
+          {loading ? "Cargando..." : "Registrarse"}
         </Button>
       </form>
-
-      {error && <p className="text-red-500 text-center mt-2">Error: {error.message}</p>}
-
-      <div className="flex items-center my-4">
-        <hr className="flex-grow border-gray-300 dark:border-gray-700" />
-        <span className="px-2 text-gray-500 dark:text-gray-400">o</span>
-        <hr className="flex-grow border-gray-300 dark:border-gray-700" />
-      </div>
-
-      <Button
-        onClick={handleGoogleSignup}
-        className="w-full bg-red-500 hover:bg-red-600 text-white"
-      >
-        Registrarse con Google
-      </Button>
 
       <p className="text-center mt-4 text-sm">
         ¿Ya tienes cuenta?{" "}

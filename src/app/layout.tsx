@@ -6,9 +6,9 @@ import "./globals.css";
 import { ApolloProvider } from "@apollo/client";
 import { ThemeProvider } from "next-themes";
 import { SessionProvider } from "next-auth/react";
-import client from "../lib/api/apolloClient";
 import { Navbar } from "../components/Navbar";
 import { useState, useEffect } from "react";
+import { CartProvider } from "@/context/CartContext";
 
 interface LayoutProps {
   children: ReactNode;
@@ -24,7 +24,7 @@ export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="es">
       <body>
-        <ApolloProvider client={client}>
+        <CartProvider>
           <SessionProvider >
             {mounted ? (
               <ThemeProvider attribute="class">
@@ -35,7 +35,7 @@ export default function RootLayout({ children }: LayoutProps) {
               <main>{children}</main>
             )}
           </SessionProvider>
-        </ApolloProvider>
+        </CartProvider>
       </body>
     </html>
   );
