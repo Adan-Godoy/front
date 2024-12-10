@@ -1,67 +1,72 @@
 "use client";
-
-import { useState } from "react";
+import { useFavorites } from "@/context/FavoritesContext";
+import { useCart } from "@/context/CartContext";
 import { Button } from "@/components/ui/button";
 
-type FavoriteItem = {
-  id: string;
-  name: string;
-  image: string;
-  instructor: string;
-};
+const FavoritesPage = () => {
+  const { favoriteItems, removeFromFavorites, clearFavorites } = useFavorites();
+  const { addToCart } = useCart();
 
-function FavoritesPage() {
-  const [favorites, setFavorites] = useState<FavoriteItem[]>([
-    {
-      id: "1",
-      name: "Curso de Desarrollo Web",
-      image: "/images/web-development.jpg",
-      instructor: "Juan Pérez",
-    },
-    {
-      id: "2",
-      name: "Curso de Ciencia de Datos",
-      image: "/images/data-science.jpg",
-      instructor: "Ana Gómez",
-    },
-  ]);
+  const moveToCart = (item: any) => {
+    addToCart(item);
+    removeFromFavorites(item.id);
+  };
 
-  const handleRemoveFavorite = (id: string) => {
-    setFavorites(favorites.filter((item) => item.id !== id));
+  const moveAllToCart = () => {
+    favoriteItems.forEach((item) => addToCart(item));
+    clearFavorites();
   };
 
   return (
     <div className="container mx-auto p-8 dark:bg-gray-900 dark:text-gray-100">
-      <h1 className="text-3xl font-bold mb-6 text-center dark:text-white">Mis Favoritos</h1>
-
-      {favorites.length > 0 ? (
-        <div className="space-y-6">
-          {favorites.map((item) => (
-            <div
-              key={item.id}
-              className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 shadow-md rounded-md"
-            >
-              <div className="flex items-center space-x-4">
-                <img src={item.image} alt={item.name} className="w-16 h-16 rounded-md object-cover" />
-                <div>
-                  <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">{item.name}</h2>
-                  <p className="text-gray-600 dark:text-gray-300">Instructor: {item.instructor}</p>
+      <h1 className="text-3xl font-bold mb-6 text-center">Mis Favoritos</h1>
+      {favoriteItems.length > 0 ? (
+        <>
+          <div className="space-y-6">
+            {favoriteItems.map((item) => (
+              <div
+                key={item.id}
+                className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 shadow-md rounded-md"
+              >
+                <div className="flex items-center space-x-4">
+                  <img src={item.imageUrl} alt={item.courseName} className="w-16 h-16 rounded-md object-cover" />
+                  <div>
+                    <h2 className="text-lg font-semibold">{item.courseName}</h2>
+                    <p>
+                      Precio:{" "}
+                      {new Intl.NumberFormat("es-CL", {
+                        style: "currency",
+                        currency: "CLP",
+                      }).format(item.price)}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex space-x-2">
+                  <Button
+                    onClick={() => moveToCart(item)}
+                    className="bg-blue-500 text-white"
+                  >
+                    Mover al Carrito
+                  </Button>
+                  <Button
+                    onClick={() => removeFromFavorites(item.id)}
+                    className="bg-red-500 text-white"
+                  >
+                    Eliminar
+                  </Button>
                 </div>
               </div>
-              <Button
-                onClick={() => handleRemoveFavorite(item.id)}
-                className="bg-red-500 text-white dark:bg-red-600"
-              >
-                Eliminar
-              </Button>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+          <Button onClick={moveAllToCart} className="mt-6 bg-green-500 text-white">
+            Mover Todos al Carrito
+          </Button>
+        </>
       ) : (
-        <p className="text-center text-gray-600 dark:text-gray-300">No tienes cursos favoritos.</p>
+        <p className="text-center">No tienes cursos en favoritos.</p>
       )}
     </div>
   );
-}
+};
 
 export default FavoritesPage;

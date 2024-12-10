@@ -42,8 +42,13 @@ function LoginPage() {
 
     try {
       const result = await login(email, password);
+      
       if (result.success) {
-        router.push("/"); // Redirige a la página principal
+        
+        //window.location.reload();
+
+        window.location.href = "/";
+
       } else {
         setError(result.error || "Error al iniciar sesión.");
       }

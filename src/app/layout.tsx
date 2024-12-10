@@ -3,12 +3,12 @@
 
 import type { ReactNode } from "react";
 import "./globals.css";
-import { ApolloProvider } from "@apollo/client";
 import { ThemeProvider } from "next-themes";
 import { SessionProvider } from "next-auth/react";
-import { Navbar } from "../components/Navbar";
+import Navbar  from "../components/Navbar";
 import { useState, useEffect } from "react";
 import { CartProvider } from "@/context/CartContext";
+import { FavoritesProvider } from "@/context/FavoritesContext";
 
 interface LayoutProps {
   children: ReactNode;
@@ -24,18 +24,16 @@ export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="es">
       <body>
-        <CartProvider>
-          <SessionProvider >
-            {mounted ? (
-              <ThemeProvider attribute="class">
-                <Navbar />
-                <main>{children}</main>
-              </ThemeProvider>
-            ) : (
-              <main>{children}</main>
-            )}
-          </SessionProvider>
-        </CartProvider>
+        <FavoritesProvider>
+          <CartProvider>
+            <SessionProvider >
+                <ThemeProvider attribute="class">
+                  <Navbar />
+                  <main>{children}</main>
+                </ThemeProvider>    
+            </SessionProvider>
+          </CartProvider>
+        </FavoritesProvider>
       </body>
     </html>
   );

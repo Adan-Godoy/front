@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import api from "../app/api/route";
+import { useFavorites } from "@/context/FavoritesContext";
 
 interface Course {
   id: string;
@@ -25,6 +26,7 @@ const CoursesList = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const { cartItems, addToCart } = useCart();
+  const { favoriteItems, addToFavorites } = useFavorites();
 
   const [toast, setToast] = useState<{ show: boolean; courseName: string }>({
     show: false,
@@ -68,6 +70,15 @@ const CoursesList = () => {
     }, 3000);
   };
 
+  const handleAddToFavorites = (course: Course) => {
+    addToFavorites(course);
+    setToast({ show: true, courseName: course.courseName });
+
+    setTimeout(() => {
+      setToast({ show: false, courseName: "" });
+    }, 3000);
+  };
+
 
   if (loading) return <p className="text-center">Cargando cursos...</p>;
   if (!loading && courses.length === 0) return <p className="text-center">No hay cursos disponibles en este momento.</p>;
@@ -77,6 +88,7 @@ const CoursesList = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {courses.map((course) => {
           const isInCart = cartItems.some((item) => item.id === course.id);
+          const isInFavorites = favoriteItems.some((item) => item.id === course.id);
 
           return (
             <div key={course.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 flex flex-col items-center">
@@ -88,17 +100,30 @@ const CoursesList = () => {
               <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">{course.courseName}</h3>
               <p className="text-gray-600 dark:text-gray-300 text-sm text-center mb-4">{course.description}</p>
               <p className="text-gray-800 dark:text-gray-200 font-bold mb-4">{formatPrice(course.price)}</p>
-              <Button
-                onClick={() => !isInCart && handleAddToCart(course)}
-                className={`px-4 py-2 rounded-md ${
-                  isInCart
-                    ? "bg-gray-500 text-white cursor-not-allowed"
-                    : "bg-blue-800 text-white hover:bg-blue-900"
-                }`}
-                disabled={isInCart}
-              >
-                {isInCart ? "Ya añadido" : "Agregar al Carrito"}
-              </Button>
+              <div className="flex space-x-2">
+                <Button
+                  onClick={() => !isInCart && handleAddToCart(course)}
+                  className={`px-4 py-2 rounded-md ${
+                    isInCart
+                      ? "bg-gray-500 text-white cursor-not-allowed"
+                      : "bg-blue-800 text-white hover:bg-blue-900"
+                  }`}
+                  disabled={isInCart}
+                >
+                  {isInCart ? "Ya añadido" : "Agregar al Carrito"}
+                </Button>
+                <Button
+                  onClick={() => !isInFavorites && handleAddToFavorites(course)}
+                  className={`px-4 py-2 rounded-md ${
+                    isInFavorites
+                      ? "bg-gray-500 text-white cursor-not-allowed"
+                      : "bg-red-800 text-white hover:bg-red-900"
+                  }`}
+                  disabled={isInFavorites}
+                >
+                  {isInFavorites ? "En Favoritos" : "Añadir a Favoritos"}
+                </Button>
+              </div>
             </div>
           );
         })}
@@ -106,13 +131,7 @@ const CoursesList = () => {
 
       {toast.show && (
         <div className="fixed bottom-4 right-4 bg-gray-800 text-white p-4 rounded-md shadow-lg flex items-center space-x-4">
-          <p>{`¡${toast.courseName} se ha agregado al carrito!`}</p>
-          <Button
-            className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
-            onClick={() => (window.location.href = "/cart")}
-          >
-            Ir a la Cesta
-          </Button>
+          <p>{`¡${toast.courseName} se ha añadido a favoritos!`}</p>
         </div>
       )}
     </>

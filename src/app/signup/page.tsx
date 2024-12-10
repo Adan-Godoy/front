@@ -10,6 +10,8 @@ import { register } from "../api/route"; // Importa la lógica de registro
 function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [fullName, setFullName] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,7 +29,7 @@ function SignupPage() {
     }
 
     try {
-      const result = await register(email, password);
+      const result = await register({ email, password, username, fullName });
       if (result.success) {
         router.push("/"); // Redirige al inicio tras el registro exitoso
       } else {
@@ -45,6 +47,28 @@ function SignupPage() {
       <h1 className="text-3xl font-bold mb-6 text-center">Registrarse</h1>
       {error && <p className="text-red-500 text-center mb-4">{error}</p>}
       <form onSubmit={handleSignup} className="space-y-4">
+        <div>
+          <Label htmlFor="fullName">Nombre Completo</Label>
+          <Input
+            id="fullName"
+            type="text"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            required
+            className="w-full"
+          />
+        </div>
+        <div>
+          <Label htmlFor="username">Nombre de Usuario</Label>
+          <Input
+            id="username"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+            className="w-full"
+          />
+        </div>
         <div>
           <Label htmlFor="email">Correo Electrónico</Label>
           <Input

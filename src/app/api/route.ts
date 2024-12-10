@@ -37,13 +37,13 @@ export const login = async (email: string, password: string): Promise<{ success:
     const response = await api.post<LoginResponse>('/auth/login', { email, password });
 
     // Guardar tokens en localStorage
-    const { accessToken, refreshToken } = response.data;
-    console.log("Response data:", response.data);
-
+    const { accessToken, refreshToken, id } = response.data.data;
+    
     localStorage.setItem('accessToken', accessToken);
     localStorage.setItem('refreshToken', refreshToken);
-
+    localStorage.setItem("userId", id);
     return { success: true, accessToken, refreshToken };
+
   } catch (error: unknown) {
     const axiosError = error as AxiosError<ErrorResponse>;
     console.error('Error al iniciar sesión:', axiosError.response?.data?.message || axiosError.message);
@@ -52,22 +52,17 @@ export const login = async (email: string, password: string): Promise<{ success:
 };
 
 // Función para registrar un usuario
-export const register = async (email: string, password: string): Promise<{ success: boolean; accessToken?: string; refreshToken?: string; error?: string }> => {
+export const register = async (data: { email: string; password: string; username: string; fullName: string }): Promise<{ success: boolean; message?: string; error?: string }> => {
   try {
-    const response = await api.post<RegisterResponse>('/auth/register', { email, password });
-
-    // Guardar tokens en localStorage
-    const { accessToken, refreshToken } = response.data;
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
-
-    return { success: true, accessToken, refreshToken };
+    const response = await api.post('/auth/register', data);
+    return { success: true, message: 'Usuario registrado exitosamente' };
   } catch (error: unknown) {
     const axiosError = error as AxiosError<ErrorResponse>;
     console.error('Error al registrar usuario:', axiosError.response?.data?.message || axiosError.message);
     return { success: false, error: axiosError.response?.data?.message || axiosError.message };
   }
 };
+
 
 // Función para enviar mensaje al chatbot
 export const sendChatMessage = async (prompt: string): Promise<ChatbotResponse> => {

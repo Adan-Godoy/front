@@ -1,35 +1,46 @@
 "use client";
 
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/outline";
-import { useSession } from "next-auth/react";
 
 export default function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
-  const { data: session } = useSession(); // Usa useSession para obtener el estado de autenticación
+  const [theme, setTheme] = useState("light"); // Estado local para el tema
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // Estado de autenticación
   const [mounted, setMounted] = useState(false);
 
-  // Asegurarse de que el componente solo se renderice en el cliente
+  // Verificar autenticación y tema inicial
   useEffect(() => {
     setMounted(true);
 
-    // Si el usuario no está autenticado, establecer el tema en "light" una vez
-    if (!session && theme === "dark") {
-      setTheme("light");
-    }
-  }, [session, theme, setTheme]);
+    // Comprobar si hay un token en localStorage
+    const token = localStorage.getItem("accessToken");
+    setIsAuthenticated(!!token); // Cambia isAuthenticated a true si existe el token
 
-  if (!mounted) return null;
+    // Leer el tema actual del localStorage
+    const storedTheme = localStorage.getItem("theme") || "light";
+    setTheme(storedTheme);
+    document.documentElement.classList.add(storedTheme); // Asegurar que el tema se aplique al cargar
+  }, []);
 
   const toggleTheme = () => {
-    // Solo permitir el cambio de tema si el usuario está autenticado
-    if (session) {
-      setTheme(theme === "dark" ? "light" : "dark");
+    if (isAuthenticated) {
+      // Alternar entre "light" y "dark" solo si el usuario está autenticado
+      const newTheme = theme === "dark" ? "light" : "dark";
+      setTheme(newTheme);
+      localStorage.setItem("theme", newTheme); // Guardar el tema en localStorage
+
+      // Cambiar la clase de HTML para reflejar el tema
+      document.documentElement.classList.remove(theme);
+      document.documentElement.classList.add(newTheme);
     } else {
-      setTheme("light"); // Mantener el tema claro si no está autenticado
+      setTheme("light"); // Si no está autenticado, mantener el tema en claro
+      document.documentElement.classList.remove("dark");
+      document.documentElement.classList.add("light");
+      localStorage.setItem("theme", "light");
     }
   };
+
+  if (!mounted) return null; // Evitar el renderizado hasta que esté montado
 
   return (
     <button
