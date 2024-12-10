@@ -25,6 +25,7 @@ const formatPrice = (price: number): string => {
 const CoursesList = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Nuevo estado
   const { cartItems, addToCart } = useCart();
   const { favoriteItems, addToFavorites } = useFavorites();
 
@@ -32,6 +33,12 @@ const CoursesList = () => {
     show: false,
     courseName: "",
   });
+
+  useEffect(() => {
+    // Verifica si existe un token en localStorage
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token); // Cambia el estado según la existencia del token
+  }, []);
 
   useEffect(() => {
     const fetchRandomCourses = async () => {
@@ -55,12 +62,9 @@ const CoursesList = () => {
       }
     };
     
-  
     fetchRandomCourses();
   }, []);
   
-  
-
   const handleAddToCart = (course: Course) => {
     addToCart(course);
     setToast({ show: true, courseName: course.courseName });
@@ -78,7 +82,6 @@ const CoursesList = () => {
       setToast({ show: false, courseName: "" });
     }, 3000);
   };
-
 
   if (loading) return <p className="text-center">Cargando cursos...</p>;
   if (!loading && courses.length === 0) return <p className="text-center">No hay cursos disponibles en este momento.</p>;
@@ -112,17 +115,19 @@ const CoursesList = () => {
                 >
                   {isInCart ? "Ya añadido" : "Agregar al Carrito"}
                 </Button>
-                <Button
-                  onClick={() => !isInFavorites && handleAddToFavorites(course)}
-                  className={`px-4 py-2 rounded-md ${
-                    isInFavorites
-                      ? "bg-gray-500 text-white cursor-not-allowed"
-                      : "bg-red-800 text-white hover:bg-red-900"
-                  }`}
-                  disabled={isInFavorites}
-                >
-                  {isInFavorites ? "En Favoritos" : "Añadir a Favoritos"}
-                </Button>
+                {isLoggedIn && ( // Muestra este botón solo si el usuario está logeado
+                  <Button
+                    onClick={() => !isInFavorites && handleAddToFavorites(course)}
+                    className={`px-4 py-2 rounded-md ${
+                      isInFavorites
+                        ? "bg-gray-500 text-white cursor-not-allowed"
+                        : "bg-red-800 text-white hover:bg-red-900"
+                    }`}
+                    disabled={isInFavorites}
+                  >
+                    {isInFavorites ? "En Favoritos" : "Añadir a Favoritos"}
+                  </Button>
+                )}
               </div>
             </div>
           );

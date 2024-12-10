@@ -38,10 +38,14 @@ export const login = async (email: string, password: string): Promise<{ success:
 
     // Guardar tokens en localStorage
     const { accessToken, refreshToken, id } = response.data.data;
+
+
     
     localStorage.setItem('accessToken', accessToken);
     localStorage.setItem('refreshToken', refreshToken);
     localStorage.setItem("userId", id);
+
+    
     return { success: true, accessToken, refreshToken };
 
   } catch (error: unknown) {
